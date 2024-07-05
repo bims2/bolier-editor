@@ -1,0 +1,15 @@
+export const EventType = {
+    NONE: 'none',
+    DEFAULT: 'default',
+    SNAP: 'snap',
+    DRAG_PAGE: 'drag_page',
+    PAGE_ZOOM: 'page_zoom',
+    MOUSE_POINT: 'mouse_point',
+    CREATE_LINE: 'line',
+    CREATE_RECT: 'RECT',
+    CREATE_TRIANGLE: 'triangle',
+    CREATE_CIRCLE: 'circle',
+    CREATE_IMAGE: 'image',
+    CREATE_POLYGON: 'polygon',
+    SELECT: 'select',
+}

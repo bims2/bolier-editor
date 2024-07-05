@@ -1,0 +1,19 @@
+{
+  "name": "bolier-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss build src/css/style_.css -o src/css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-dalcom:lkj-dalcomlab/bolier-editor.git"
+  },
+  "author": "lkj-dalcomlab",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}
