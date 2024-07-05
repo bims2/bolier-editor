@@ -1,4 +1,5 @@
 import {Rect} from "./Rect.js";
+import {ControlType} from "./Control.js";
 
 export class Label extends Rect {
     constructor() {
@@ -6,6 +7,10 @@ export class Label extends Rect {
         this._text = '';
         this._fontSize = 20;
         this._fontColor = 'rgb(0, 0, 0)';
+    }
+
+    get type() {
+        return ControlType.LABEL;
     }
 
     get text() {
@@ -30,6 +35,7 @@ export class Label extends Rect {
     }
 
     render(painter) {
+        // super.render(painter);
         painter.drawLabel(this);
     }
 }

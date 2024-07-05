@@ -14,6 +14,7 @@ export const ControlType = {
     TRIANGLE: 'triangle',
     CIRCLE: 'circle',
     IMAGE: 'image',
+    LABEL: 'label',
     POLYGON: 'polygon',
 }
 export class Control {

@@ -1,15 +1,13 @@
 import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
-import {CreateLabelRender} from "../editor/control/render/CreateLabelRender.js";
-import {TextEditor} from "../editor/text/TextEditor.js";
 
 export class CreateLabelEventHandler extends EventHandler {
     constructor(editor) {
         super();
         this.label = editor.page.newControl;
-        this.textEditor = new TextEditor(editor, this.label);
+        this.textEditor = editor.textEditor
+        this.textEditor.updateLabel(this.label);
         editor.enabledShortcut = false;
-        editor.addForegroundRender(new CreateLabelRender(this.label));
         this.isDown = false;
     }
 
@@ -19,10 +17,9 @@ export class CreateLabelEventHandler extends EventHandler {
 
     onMouseDown(e) {
         if (this.isDown) {
-            e.editor.removeForegroundRender();
             e.editor.clearCommand();
             if (this.textEditor.val === '') {
-                this.#close(e.editor);
+                this.textEditor.hide();
                 return;
             }
             this.label.text = this.textEditor.val + '';
@@ -42,7 +39,7 @@ export class CreateLabelEventHandler extends EventHandler {
             this.label.rb.y = y1;
 
             e.editor.page.addControl(this.label);
-            this.#close(e.editor);
+            this.textEditor.hide();
             return;
         }
         this.isDown = true;
@@ -50,7 +47,7 @@ export class CreateLabelEventHandler extends EventHandler {
         this.label.lt.x = e.point.x;
         this.label.lt.y = e.point.y;
         e.originEvent.preventDefault();
-        this.textEditor.show(e.point);
+        this.textEditor.show(e.clientPoint);
         this.textEditor.focus();
     }
 
@@ -83,10 +80,5 @@ export class CreateLabelEventHandler extends EventHandler {
 
     onKeyUp(e) {
 
-    }
-
-    #close(editor) {
-        editor.enabledShortcut = true;
-        this.textEditor.hide();
     }
 }

@@ -15,7 +15,6 @@ export class ToolbarUtil {
     static getInstance() {
         if (!this.instance) {
             this.instance = this;
-            this.toolbars = [];
             this.lineOptionToolbar = document.getElementById('line-option');
             this.lineWidthToolbar = document.getElementById('line-width');
             this.lineStyleToolbar = document.getElementById('line-style');

@@ -1,15 +1,17 @@
 export class TextEditor {
-    constructor(editor, label) {
-        const canvasRect = editor.canvas.getBoundingClientRect();
-        this._p = {x: canvasRect.x, y: canvasRect.y};
-
+    constructor(editor) {
         this.#init();
         this._editor = editor;
+        //TODO: 정리해야할 코드
+        this._coordinate = editor.page.coordinate;
+    }
+
+    updateLabel(label) {
         this._label = label;
         this._input.value = label.text;
         this._input.style.fontSize = label.fontSize + 'px';
         this._input.fontFamily = 'sans-serif';
-        editor.ctx.font = label.fontSize + 'px sans-serif';
+        this._editor.ctx.font = label.fontSize + 'px sans-serif';
         this.#resizeInput();
     }
 
@@ -27,27 +29,47 @@ export class TextEditor {
     }
 
     #resizeInput() {
-        this._input.style.width = (this.getInputSize().width + 15) + 'px';
+        //TODO: 확대시 input 태그가 캔버스 밖으로 넘어가는 현상 발생
+        this._input.style.width = (this.#getSize(this._coordinate.dpr).width +
+            (this._coordinate.dpr * 16)) + 'px';
     }
 
     getInputSize() {
+        return this.#getSize();
+    }
+
+    #getSize(dpr) {
+        let fontSize = this._label.fontSize;
+        if (dpr) {
+            fontSize *= dpr;
+        }
+
         const span = document.createElement('span');
         span.style.visibility = 'hidden';
         span.style.whiteSpace = 'pre';
-        span.style.fontSize = getComputedStyle(this._input).fontSize;
+        span.style.fontSize = fontSize + 'px';
         span.style.fontFamily = getComputedStyle(this._input).fontFamily;
         span.textContent = this._input.value || this._input.placeholder;
+
+        // const ctx = this._editor.ctx;
+        // ctx.fontSize = this._label.fontSize + 'px';
+        // ctx.fontFamily = getComputedStyle(this._input).fontFamily;
+        // const width_ = ctx.measureText(this._input.value).width + 4;
+
         document.body.appendChild(span);
-        const width = span.offsetWidth;
+        let width = span.offsetWidth;
         const height = span.offsetHeight;
         document.body.removeChild(span);
         return {width: width, height: height};
     }
 
     show(p) {
-        this._input.style.top = (p.y + this._p.y) + 'px';
-        this._input.style.left = (p.x + this._p.x) + 'px';
-        this._input.classList.remove('hidden');
+        const input = this._input;
+        input.style.top = (p.y + window.scrollY) + 'px';
+        input.style.left = (p.x + window.scrollX) + 'px';
+        input.style.fontSize = (this._label.fontSize * this._coordinate.dpr) + 'px';
+        input.classList.remove('hidden');
+        this._editor.enabledShortcut = false;
         this.update();
         this.focus();
     }
@@ -57,6 +79,7 @@ export class TextEditor {
     }
 
     hide() {
+        this._editor.enabledShortcut = true;
         this._input.classList.add('hidden');
     }
 
