@@ -78,19 +78,19 @@ export class Editor {
         toolbar.className =
             'pointer-events-auto flex items-center rounded-md border border-slate-200 ' +
             'shadow-sm bg-background text-foreground relative gap-0.5 p-0.5 p-1 pl-3 pr-1';
-        const lineBtn = this.#createButton('./icon/line.png', 'Q', () => {
+        const lineBtn = this.#createButton('./src/icon/line.png', 'Q', () => {
             this._tools.createLine();
         });
-        const rectBtn = this.#createButton('./icon/rect.png', 'W', () => {
+        const rectBtn = this.#createButton('./src/icon/rect.png', 'W', () => {
             this._tools.createRect();
         });
-        const triangleBtn = this.#createButton('./icon/triangle.png', 'E', () => {
+        const triangleBtn = this.#createButton('./src/icon/triangle.png', 'E', () => {
             this._tools.createTriangle();
         });
-        const circleBtn = this.#createButton('./icon/circle.png', 'R', () => {
+        const circleBtn = this.#createButton('./src/icon/circle.png', 'R', () => {
             this._tools.createCircle();
         });
-        const imageBtn = this.#createButton('./icon/image.png', 'T', () => {
+        const imageBtn = this.#createButton('./src/icon/image.png', 'T', () => {
             this._tools.createImage();
         });
         toolbar.appendChild(lineBtn);
@@ -104,10 +104,10 @@ export class Editor {
         separator.role = 'none';
         toolbar.appendChild(separator);
 
-        const undoBtn = this.#createButton('./icon/undo.png', 'Z', ()=> {
+        const undoBtn = this.#createButton('./src/icon/undo.png', 'Z', ()=> {
             this._tools.undo();
         });
-        const redoBtn = this.#createButton('./icon/redo.png', 'Y', ()=> {
+        const redoBtn = this.#createButton('./src/icon/redo.png', 'Y', ()=> {
             this._tools.redo();
         });
         toolbar.appendChild(undoBtn);
@@ -120,12 +120,12 @@ export class Editor {
         lineToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const lineWidthToolbar = this.#createLineWidthToolbar();
-        const lineWidthBtn = this.#createButton('./icon/line_width.png', '', () => {
+        const lineWidthBtn = this.#createButton('./src/icon/line_width.png', '', () => {
             ToolbarUtil.showLineWidthToolbar();
         });
 
         const lineStyleToolbar = this.#createLineStyleToolbar();
-        const lineStyleBtn = this.#createButton('./icon/line_style.png', '', () => {
+        const lineStyleBtn = this.#createButton('./src/icon/line_style.png', '', () => {
             ToolbarUtil.showLineStyleToolbar();
         });
 
@@ -139,7 +139,7 @@ export class Editor {
                 }
         );
         lineColorToolbar.classList.add('bg-slate-200');
-        const lineColorBtn = this.#createButton('./icon/line_color.png', '', () => {
+        const lineColorBtn = this.#createButton('./src/icon/line_color.png', '', () => {
             ToolbarUtil.showLineColorToolbar();
         });
 
@@ -153,7 +153,7 @@ export class Editor {
             }
         );
         fillColorToolbar.classList.add('bg-slate-300');
-        const fillColorBtn = this.#createButton('./icon/fill_color.png', '', () => {
+        const fillColorBtn = this.#createButton('./src/icon/fill_color.png', '', () => {
             ToolbarUtil.showFillColorToolbar();
         });
         fillColorBtn.id = 'fill-color-btn';
@@ -198,14 +198,14 @@ export class Editor {
         lineStyleToolbar.style.top = ToolbarPosition.TOOLBAR_TOP + 'px';
         lineStyleToolbar.className = COMMON_TOOLBAR_STYLE;
 
-        const lineSolid = this.#createButton('./icon/line_width_1.png', '', () => {
+        const lineSolid = this.#createButton('./src/icon/line_width_1.png', '', () => {
             const control = this.page.selectControl.control;
             this.#changeLineStyle(control, LineStyle.SOLID);
             this.render();
         });
         lineStyleToolbar.appendChild(lineSolid);
 
-        const lineDash = this.#createButton('./icon/line_dash.png', '', () => {
+        const lineDash = this.#createButton('./src/icon/line_dash.png', '', () => {
             const control = this.page.selectControl.control;
             this.#changeLineStyle(control, LineStyle.DASH);
             this.render();
