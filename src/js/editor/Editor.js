@@ -1,13 +1,8 @@
 import {EventManager} from "../event/EventManager.js";
 import {Page} from "./Page.js";
 import {Tools} from "../Tools.js";
-import {ToolbarPosition, ToolbarUtil} from "./ToolbarUtil.js";
-import {LineStyle} from "./control/LineStyle.js";
+import {ToolbarUtil} from "./ToolbarUtil.js";
 import {HistoryManager} from "./HistoryManager.js";
-import {LineColorAction} from "../command/undo/LineColorAction.js";
-import {LineStyleAction} from "../command/undo/LineStyleAction.js";
-import {LineWidthAction} from "../command/undo/LineWidthAction.js";
-import {FillColorAction} from "../command/undo/FillColorAction.js";
 import {TextEditor} from "./text/TextEditor.js";
 import {Toolbar} from "./Toolbar.js";
 
@@ -143,5 +138,23 @@ export class Editor {
 
     get historyManager() {
         return this._historyManager;
+    }
+
+    get xPosition() {
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const borderWidth = Number(this.canvas.style.borderWidth.slice(0, -2));
+        const min = canvasRect.x + borderWidth;
+        const width = Number(this.canvas.style.width.slice(0, -2));
+        const max = min + width;
+
+        return {min: min, max: max};
+    }
+
+    get maxPosition() {
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const borderWidth = Number(this.canvas.style.borderWidth.slice(0, -2));
+        const x = canvasRect.x + width + borderWidth;
+        const y = canvasRect.y + borderWidth;
+        return {x: x, y: y};
     }
 }

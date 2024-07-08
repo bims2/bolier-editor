@@ -28,7 +28,6 @@ export class SelectEventHandler extends EventHandler {
             const p2 = e.point;
             const p3 = {x: p2.x - p1.x, y: p2.y - p1.y};
             const dpr = e.editor.page.coordinate.dpr;
-            console.log(e.editor.page.coordinate.dpr);
             p3.x *= dpr;
             p3.y *= dpr;
 

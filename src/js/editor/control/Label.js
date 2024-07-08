@@ -18,7 +18,6 @@ export class Label extends Rect {
     }
 
     set text(value) {
-        console.log(value);
         this._text = value;
     }
 
