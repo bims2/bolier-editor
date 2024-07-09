@@ -23,7 +23,6 @@ export class CreateLabelEventHandler extends EventHandler {
                 return;
             }
             this.label.text = this.textEditor.val + '';
-            this.label.updatePosition();
 
             const x = this.label.lt.x;
             const y = this.label.lt.y;
@@ -38,6 +37,7 @@ export class CreateLabelEventHandler extends EventHandler {
             this.label.rb.x = x1;
             this.label.rb.y = y1;
 
+            this.label.updatePosition();
             e.editor.page.addControl(this.label);
             this.textEditor.hide();
             return;
