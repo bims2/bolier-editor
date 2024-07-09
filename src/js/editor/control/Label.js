@@ -1,5 +1,7 @@
 import {Rect} from "./Rect.js";
 import {ControlType} from "./Control.js";
+import {PointPosition} from "./PointPosition.js";
+import {TextUtil} from "../text/TextUtil.js";
 
 export class Label extends Rect {
     constructor() {
@@ -31,6 +33,30 @@ export class Label extends Rect {
 
     set fontColor(value) {
         this._fontColor = value;
+    }
+
+    resize(resizeType, p) {
+        super.resize(resizeType, p);
+
+        let width = Math.abs(this.rt.x - this.lt.x) ?? 0.1;
+        this.fontSize = TextUtil.calculatorFontSize(this.text, width, this.fontSize);
+        let height = TextUtil.calculatorFontWidthHeight(this.text, this.fontSize).height;
+        let y = 0;
+
+        switch (resizeType) {
+            case PointPosition.LT:
+            case PointPosition.RT:
+                y = this.rb.y - height;
+                this.lt.y = y;
+                this.rt.y = y;
+                break;
+            case PointPosition.RB:
+            case PointPosition.LB:
+                y = this.rt.y + height;
+                this.lb.y = y;
+                this.rb.y = y;
+                break;
+        }
     }
 
     render(painter) {

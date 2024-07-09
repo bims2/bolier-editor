@@ -13,15 +13,15 @@ export class EditLabelEventHandler extends EventHandler {
         textEditor.hide();
 
         if (textEditor.val === '') {
-            e.editor.page.removeControl()
+            e.editor.page.removeControl(this._label);
             return;
         }
 
         const x = this._label.lt.x;
         const y = this._label.lt.y;
-        const inputSize = textEditor.getInputSize();
-        const x1 = x + inputSize.width + 5;
-        const y1 = y + inputSize.height;
+        const textSize = textEditor.getSize();
+        const x1 = x + textSize.width;
+        const y1 = y + textSize.height;
 
         this._label.rt.x = x1;
         this._label.rt.y = y;

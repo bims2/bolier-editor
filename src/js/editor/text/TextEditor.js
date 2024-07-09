@@ -1,9 +1,12 @@
+import {TextUtil} from "./TextUtil.js";
+
 export class TextEditor {
     constructor(editor) {
         this.#init();
         this._editor = editor;
         //TODO: 정리해야할 코드
         this._coordinate = editor.page.coordinate;
+        TextUtil.setEditor(editor);
     }
 
     updateLabel(label) {
@@ -17,19 +20,24 @@ export class TextEditor {
 
     #init() {
         const input = document.getElementById('text-editor');
+        const curText = document.getElementById('cur-text');
         if (input) {
             this._input = input;
+            this._curText =
             return;
         }
 
         this._input = document.createElement('input');
         this._input.id = 'text-editor';
         this._input.className = 'absolute pl-1 bg-transparent focus:border-transparent';
+
+        this._curText = document.createElement('span');
+        // this._curText
         document.body.appendChild(this._input);
     }
 
     #resizeInput() {
-        let width = this.#getSize(this._coordinate.dpr).width + (this._coordinate.dpr * 16);
+        let width = this.getSize(this._coordinate.dpr).width + TextUtil.getWhiteSpace();
         let right = this._input.getBoundingClientRect().x + width;
         const gap = right - this._editor.xPosition.max;
         if (gap > 0) {
@@ -39,33 +47,13 @@ export class TextEditor {
         this._input.style.width = width + 'px';
     }
 
-    getInputSize() {
-        return this.#getSize();
-    }
-
-    #getSize(dpr) {
+    getSize(dpr) {
         let fontSize = this._label.fontSize;
         if (dpr) {
             fontSize *= dpr;
         }
 
-        const span = document.createElement('span');
-        span.style.visibility = 'hidden';
-        span.style.whiteSpace = 'pre';
-        span.style.fontSize = fontSize + 'px';
-        span.style.fontFamily = getComputedStyle(this._input).fontFamily;
-        span.textContent = this._input.value || this._input.placeholder;
-
-        // const ctx = this._editor.ctx;
-        // ctx.fontSize = this._label.fontSize + 'px';
-        // ctx.fontFamily = getComputedStyle(this._input).fontFamily;
-        // const width_ = ctx.measureText(this._input.value).width + 4;
-
-        document.body.appendChild(span);
-        let width = span.offsetWidth;
-        const height = span.offsetHeight;
-        document.body.removeChild(span);
-        return {width: width, height: height};
+        return TextUtil.calculatorFontWidthHeight(this._input.value, fontSize, getComputedStyle(this._input).fontFamily);
     }
 
     show(p) {
@@ -77,6 +65,7 @@ export class TextEditor {
         input.style.top = (p.y + window.scrollY) + 'px';
         input.style.left = (minX + window.scrollX) + 'px';
         input.style.fontSize = (this._label.fontSize * this._coordinate.dpr) + 'px';
+        // input.style.backgroundColor = this._label.fillColor;
         input.classList.remove('hidden');
         this._editor.enabledShortcut = false;
         this.update();
@@ -94,10 +83,6 @@ export class TextEditor {
 
     update() {
         this.#resizeInput();
-        // const text = this._input.value;
-        // const width = this._editor.ctx.measureText(text).width;
-        // this._input.style.width = width + 'px';
-        // console.log('input width', width);
     }
 
     get val() {

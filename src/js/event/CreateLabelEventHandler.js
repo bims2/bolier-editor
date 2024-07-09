@@ -26,7 +26,7 @@ export class CreateLabelEventHandler extends EventHandler {
 
             const x = this.label.lt.x;
             const y = this.label.lt.y;
-            const inputSize = this.textEditor.getInputSize();
+            const inputSize = this.textEditor.getSize();
             const x1 = x + inputSize.width + 5;
             const y1 = y + inputSize.height;
 

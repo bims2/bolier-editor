@@ -102,6 +102,13 @@ export class SelectEventHandler extends EventHandler {
             } else {
                 page.setCursor(CursorType.DEFAULT);
             }
+
+            if ((page.selectControl.control.type === ControlType.LABEL) &&
+                (resizeType === PointPosition.L || resizeType === PointPosition.R) ||
+                (resizeType === PointPosition.T || resizeType === PointPosition.B)) {
+                page.setCursor(CursorType.DEFAULT);
+                page.selectControl.resizeType = PointPosition.NONE;
+            }
         } else {
             page.setCursor(CursorType.DEFAULT);
         }
