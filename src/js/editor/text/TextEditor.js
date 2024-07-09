@@ -29,13 +29,14 @@ export class TextEditor {
     }
 
     #resizeInput() {
-        const maxX = this._editor.xPosition.max;
-        //TODO: 확대시 input 태그가 캔버스 밖으로 넘어가는 현상 발생
-        let right = ;
         let width = this.#getSize(this._coordinate.dpr).width + (this._coordinate.dpr * 16);
+        let right = this._input.getBoundingClientRect().x + width;
+        const gap = right - this._editor.xPosition.max;
+        if (gap > 0) {
+            width -= gap;
+        }
 
-        this._input.style.width = (this.#getSize(this._coordinate.dpr).width +
-            (this._coordinate.dpr * 16)) + 'px';
+        this._input.style.width = width + 'px';
     }
 
     getInputSize() {
@@ -71,7 +72,7 @@ export class TextEditor {
         const input = this._input;
 
         const editor = this._editor;
-        const minX = Math.max(editor.xPosition.x, p.x);
+        const minX = Math.max(editor.xPosition.min, p.x);
 
         input.style.top = (p.y + window.scrollY) + 'px';
         input.style.left = (minX + window.scrollX) + 'px';

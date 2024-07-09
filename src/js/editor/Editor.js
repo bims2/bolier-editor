@@ -144,17 +144,8 @@ export class Editor {
         const canvasRect = this.canvas.getBoundingClientRect();
         const borderWidth = Number(this.canvas.style.borderWidth.slice(0, -2));
         const min = canvasRect.x + borderWidth;
-        const width = Number(this.canvas.style.width.slice(0, -2));
-        const max = min + width;
+        const max = canvasRect.right;
 
         return {min: min, max: max};
-    }
-
-    get maxPosition() {
-        const canvasRect = this.canvas.getBoundingClientRect();
-        const borderWidth = Number(this.canvas.style.borderWidth.slice(0, -2));
-        const x = canvasRect.x + width + borderWidth;
-        const y = canvasRect.y + borderWidth;
-        return {x: x, y: y};
     }
 }
