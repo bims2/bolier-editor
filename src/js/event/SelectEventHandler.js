@@ -123,8 +123,7 @@ export class SelectEventHandler extends EventHandler {
             return;
         }
 
-        ToolbarUtil.getInstance().showControlOptionToolbar(
-            e.originPoint, page.selectControl.control);
+        ToolbarUtil.getInstance().showControlOptionToolbar(e.originPoint, page.selectControl.control);
     }
 
     onMouseWheel(e) {

@@ -68,7 +68,36 @@ export class Toolbar {
         this._toolbarWrap.appendChild(toolbar);
 
         root.appendChild(this.#createControlOptionToolbar());
+        root.appendChild(this.#createFontOptionToolbar());
         root.appendChild(this._toolbarWrap);
+    }
+
+    #createFontOptionToolbar() {
+        const fontToolbar = document.createElement('div');
+        fontToolbar.id = 'font-option';
+        fontToolbar.className = COMMON_TOOLBAR_STYLE;
+
+        const fontSizeWrap = document.createElement('p');
+        fontSizeWrap.className = 'w-12 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
+
+        const fontSizeImg = document.createElement('img');
+        fontSizeImg.src = './src/icon/font_size.png';
+        fontSizeImg.className = 'w-5 h-5 mr-2';
+
+        const fontSize = document.createElement('input');
+        fontSize.type = 'number';
+        fontSize.className = 'w-5 h-5';
+
+        fontSizeWrap.appendChild(fontSizeImg);
+        fontSizeWrap.appendChild(fontSize);
+
+        const fontColorBtn = this.#createButton('./src/icon/font_color.png', '', ()=> {
+        });
+
+        fontToolbar.appendChild(fontSizeWrap);
+        fontToolbar.appendChild(fontColorBtn);
+
+        return fontToolbar;
     }
 
     #createControlOptionToolbar() {

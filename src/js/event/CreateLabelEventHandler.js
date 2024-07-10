@@ -1,17 +1,18 @@
 import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
 import {Action} from "../command/undo/Action.js";
+import {CursorType} from "../editor/CursorType.js";
 
 export class CreateLabelEventHandler extends EventHandler {
     constructor(editor) {
         super();
         this.label = editor.page.newControl;
-        this._editor = editor;
         this.textEditor = editor.textEditor
         this.textEditor.updateLabel(this.label);
         editor.enabledShortcut = false;
         this.isDown = false;
 
+        editor.page.setCursor(CursorType.TEXT);
         editor.historyManager.startUndo(new Action('undo create line', ()=> {
             editor.page.removeControl(this.label);
         }));
@@ -47,8 +48,8 @@ export class CreateLabelEventHandler extends EventHandler {
             e.editor.page.addControl(this.label);
             this.textEditor.hide();
 
-            this._editor.historyManager.endUndo(new Action('redo create line', ()=> {
-                this._editor.page.addControl(this.label);
+            e.editor.historyManager.endUndo(new Action('redo create line', ()=> {
+                e.editor.page.addControl(this.label);
             }));
             return;
         }
@@ -59,5 +60,13 @@ export class CreateLabelEventHandler extends EventHandler {
         e.originEvent.preventDefault();
         this.textEditor.show(e.clientPoint);
         this.textEditor.focus();
+    }
+
+    onKeyDown(e) {
+        if (!this.isDown && e.originEvent.key === 'Escape') {
+            e.editor.enabledShortcut = true;
+            e.editor.page.setCursor(CursorType.DEFAULT);
+            e.editor.tools.clear();
+        }
     }
 }

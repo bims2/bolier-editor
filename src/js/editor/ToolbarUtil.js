@@ -21,11 +21,30 @@ export class ToolbarUtil {
             this.lineColorToolbar = document.getElementById('line-color');
             this.fillColorToolbar = document.getElementById('fill-color');
             this.fillColorBtn = document.getElementById('fill-color-btn');
+
+            this.fontOptionToolbar = document.getElementById('font-option');
         }
         return this.instance;
     }
 
+    static showFontOptionToolbar(p) {
+        this.fontOptionToolbar.classList.remove('hidden');
+        this.fontOptionToolbar.style.top = p.y + 'px';
+        this.fontOptionToolbar.style.left = p.x + 'px';
+        this.#checkTagPosition(this.fontOptionToolbar, p.x);
+    }
+
+    static hideFontOptionToolbar() {
+        this.fontOptionToolbar.classList.add('hidden');
+    }
+
     static showControlOptionToolbar(p, control) {
+        if (control.type === ControlType.LABEL) {
+            this.clear();
+            this.showFontOptionToolbar(p);
+            return;
+        }
+
         this.lineOptionToolbar.classList.remove('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
@@ -97,5 +116,6 @@ export class ToolbarUtil {
 
     static clear() {
         this.hideLineOptionToolbar();
+        this.hideFontOptionToolbar();
     }
 }
