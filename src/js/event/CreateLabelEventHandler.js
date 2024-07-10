@@ -50,35 +50,4 @@ export class CreateLabelEventHandler extends EventHandler {
         this.textEditor.show(e.clientPoint);
         this.textEditor.focus();
     }
-
-    onMouseMove(e) {
-        super.onMouseMove(e);
-    }
-
-    onMouseUp(e) {
-        super.onMouseUp(e);
-    }
-
-    onMouseWheel(e) {
-        super.onMouseWheel(e);
-    }
-
-    onKeyDown(e) {
-        // const regex = /^[a-zA-Z0-9]$/;
-        // const key = e.originEvent.key;
-        // if (regex.test(key)) {
-        //     let text = this.label.text;
-        //     console.log(text);
-        //     text += key;
-        //     this.label.text = text;
-        //     e.editor.render();
-        // }
-        //
-        // console.log(key);
-        this.textEditor.update();
-    }
-
-    onKeyUp(e) {
-
-    }
 }

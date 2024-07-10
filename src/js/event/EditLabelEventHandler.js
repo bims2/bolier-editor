@@ -1,4 +1,5 @@
 import {EventHandler} from "./EventHandler.js";
+import {TextUtil} from "../editor/text/TextUtil.js";
 
 export class EditLabelEventHandler extends EventHandler {
     constructor(editor) {
@@ -17,11 +18,14 @@ export class EditLabelEventHandler extends EventHandler {
             return;
         }
 
+        const text = textEditor.val + '';
+
         const x = this._label.lt.x;
         const y = this._label.lt.y;
-        const textSize = textEditor.getSize();
-        const x1 = x + textSize.width;
-        const y1 = y + textSize.height;
+        let size = TextUtil.calculatorFontWidthHeight(text, this._label.fontSize);
+
+        const x1 = x + size.width;
+        const y1 = y + size.height;
 
         this._label.rt.x = x1;
         this._label.rt.y = y;
@@ -29,10 +33,6 @@ export class EditLabelEventHandler extends EventHandler {
         this._label.lb.y = y1;
         this._label.rb.x = x1;
         this._label.rb.y = y1;
-        this._label.text = textEditor.val + '';
-    }
-
-    onKeyDown(e) {
-        e.editor.textEditor.update();
+        this._label.text = text;
     }
 }

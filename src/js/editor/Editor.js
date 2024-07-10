@@ -140,12 +140,20 @@ export class Editor {
         return this._historyManager;
     }
 
-    get xPosition() {
+    get maxPosition() {
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const maxX = canvasRect.right;
+        const maxY = canvasRect.y + canvasRect.height;
+
+        return {x: maxX, y: maxY};
+    }
+
+    get minPosition() {
         const canvasRect = this.canvas.getBoundingClientRect();
         const borderWidth = Number(this.canvas.style.borderWidth.slice(0, -2));
-        const min = canvasRect.x + borderWidth;
-        const max = canvasRect.right;
+        const minX = canvasRect.x + borderWidth;
+        const minY = canvasRect.y + borderWidth;
 
-        return {min: min, max: max};
+        return {x: minX, y: minY};
     }
 }
