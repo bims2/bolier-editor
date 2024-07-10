@@ -1,14 +1,20 @@
 import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
+import {Action} from "../command/undo/Action.js";
 
 export class CreateLabelEventHandler extends EventHandler {
     constructor(editor) {
         super();
         this.label = editor.page.newControl;
+        this._editor = editor;
         this.textEditor = editor.textEditor
         this.textEditor.updateLabel(this.label);
         editor.enabledShortcut = false;
         this.isDown = false;
+
+        editor.historyManager.startUndo(new Action('undo create line', ()=> {
+            editor.page.removeControl(this.label);
+        }));
     }
 
     get type() {
@@ -40,6 +46,10 @@ export class CreateLabelEventHandler extends EventHandler {
             this.label.updatePosition();
             e.editor.page.addControl(this.label);
             this.textEditor.hide();
+
+            this._editor.historyManager.endUndo(new Action('redo create line', ()=> {
+                this._editor.page.addControl(this.label);
+            }));
             return;
         }
         this.isDown = true;
