@@ -41,11 +41,15 @@ export class Toolbar {
         const imageBtn = this.#createButton('./src/icon/image.png', 'T', () => {
             this._tools.createImage();
         });
+        const labelBtn = this.#createButton('./src/icon/label.png', 'A', ()=> {
+           this._tools.createLabel();
+        });
         toolbar.appendChild(lineBtn);
         toolbar.appendChild(rectBtn);
         toolbar.appendChild(triangleBtn);
         toolbar.appendChild(circleBtn);
         toolbar.appendChild(imageBtn);
+        toolbar.appendChild(labelBtn);
 
         const separator = document.createElement('div');
         separator.className = 'shrink-0 bg-border h-full w-[1px] mr-2 dark:bg-gray-300';

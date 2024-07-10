@@ -21,8 +21,8 @@ export class Editor {
         this.page = new Page(this.ctx);
         this.eventManager = new EventManager(this);
         this._historyManager = new HistoryManager(this);
-        this._toolbar = new Toolbar(this);
         this._tools = new Tools(this);
+        this._toolbar = new Toolbar(this);
 
         this._textEditor = new TextEditor(this);
 
