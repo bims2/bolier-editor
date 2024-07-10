@@ -11,8 +11,13 @@ export class TextUtil {
         ctx.save();
         ctx.font = `${initialFontSize} Arial`;
         const textWidth = ctx.measureText(text).width ?? 0.1;
-        const scalingFactor = maxWidth / textWidth ?? 0;
+        let scalingFactor = maxWidth / textWidth;
+        if (scalingFactor <= 0 || textWidth <= 0) {
+            console.log('textWidth', textWidth, 'factor', scalingFactor);
+            return 0.1;
+        }
         ctx.restore();
+
         return initialFontSize * scalingFactor;
     }
 

@@ -57,6 +57,8 @@ export class Label extends Rect {
                 this.rb.y = y;
                 break;
         }
+
+        this.updateSelectPosition();
     }
 
     render(painter) {

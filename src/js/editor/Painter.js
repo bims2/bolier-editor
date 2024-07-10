@@ -12,9 +12,9 @@ export class Painter {
     drawLabel(label) {
         // const width = this.ctx.measureText(text).width;
         // const height = 15;
-        const x = label.lt.x;
-        const y = label.lb.y;
-        this.ctx.font = label.fontSize + 'px Arial';
+        const x = label.minPoint.x;
+        const y = label.maxPoint.y;
+        this.ctx.font = `${label.fontSize}px Arial`;
         // this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'bottom';
         this.ctx.fillText(label.text, x, y);
