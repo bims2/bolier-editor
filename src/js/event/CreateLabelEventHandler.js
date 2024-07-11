@@ -13,7 +13,7 @@ export class CreateLabelEventHandler extends EventHandler {
         this.isDown = false;
 
         editor.page.setCursor(CursorType.TEXT);
-        editor.historyManager.startUndo(new Action('undo create line', ()=> {
+        editor.historyManager.startUndo(new Action('undo create label', ()=> {
             editor.page.removeControl(this.label);
         }));
     }
@@ -48,7 +48,7 @@ export class CreateLabelEventHandler extends EventHandler {
             e.editor.page.addControl(this.label);
             this.textEditor.hide();
 
-            e.editor.historyManager.endUndo(new Action('redo create line', ()=> {
+            e.editor.historyManager.endUndo(new Action('redo create label', ()=> {
                 e.editor.page.addControl(this.label);
             }));
             return;
@@ -60,6 +60,18 @@ export class CreateLabelEventHandler extends EventHandler {
         e.originEvent.preventDefault();
         this.textEditor.show(e.clientPoint);
         this.textEditor.focus();
+    }
+
+    onMouseMove(e) {
+        super.onMouseMove(e);
+    }
+
+    onMouseUp(e) {
+        super.onMouseUp(e);
+    }
+
+    onMouseWheel(e) {
+        super.onMouseWheel(e);
     }
 
     onKeyDown(e) {

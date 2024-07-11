@@ -69,7 +69,7 @@ export class SelectEventHandler extends EventHandler {
         const page = e.editor.page;
         page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
 
-        if (e.down && page.selectControl != null) {
+        if (e.down && page.selectControl !== null) {
             page.setCursor(CursorType.MOVE);
             e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectControl.control));
             e.editor.startDragHandler(new MoveControlEventHandler());
@@ -103,9 +103,9 @@ export class SelectEventHandler extends EventHandler {
                 page.setCursor(CursorType.DEFAULT);
             }
 
-            if ((page.selectControl.control.type === ControlType.LABEL) &&
-                (resizeType === PointPosition.L || resizeType === PointPosition.R) ||
-                (resizeType === PointPosition.T || resizeType === PointPosition.B)) {
+            if (page.selectControl.control.type === ControlType.LABEL &&
+                ((resizeType === PointPosition.L || resizeType === PointPosition.R) ||
+                (resizeType === PointPosition.T || resizeType === PointPosition.B))) {
                 page.setCursor(CursorType.DEFAULT);
                 page.selectControl.resizeType = PointPosition.NONE;
             }

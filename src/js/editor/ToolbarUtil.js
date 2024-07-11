@@ -6,6 +6,7 @@ export const ToolbarPosition = {
     LINE_STYLE_LEFT : 10,
     LINE_COLOR_LEFT : 60,
     FILL_COLOR_LEFT : 100,
+    FONT_COLOR_LEFT : 30,
 }
 export class ToolbarUtil {
     static instance;
@@ -23,25 +24,29 @@ export class ToolbarUtil {
             this.fillColorBtn = document.getElementById('fill-color-btn');
 
             this.fontOptionToolbar = document.getElementById('font-option');
+            this.fontColorToolbar = document.getElementById('font-color');
+            this.fontSize = document.getElementById('font-size');
         }
         return this.instance;
     }
 
-    static showFontOptionToolbar(p) {
+    static showFontOptionToolbar(p, control) {
         this.fontOptionToolbar.classList.remove('hidden');
         this.fontOptionToolbar.style.top = p.y + 'px';
         this.fontOptionToolbar.style.left = p.x + 'px';
+        this.fontSize.value = Math.round(control.fontSize);
         this.#checkTagPosition(this.fontOptionToolbar, p.x);
     }
 
     static hideFontOptionToolbar() {
         this.fontOptionToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
     }
 
     static showControlOptionToolbar(p, control) {
         if (control.type === ControlType.LABEL) {
             this.clear();
-            this.showFontOptionToolbar(p);
+            this.showFontOptionToolbar(p, control);
             return;
         }
 
@@ -98,6 +103,11 @@ export class ToolbarUtil {
         this.lineStyleToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.#checkTagPosition(this.fillColorToolbar, ToolbarPosition.FILL_COLOR_LEFT);
+    }
+
+    static showFontColorToolbar() {
+        this.fontColorToolbar.classList.remove('hidden');
+        this.#checkTagPosition(this.fontColorToolbar, ToolbarPosition.FONT_COLOR_LEFT);
     }
 
     static #checkTagPosition(tag, tagLeft) {

@@ -10,6 +10,7 @@ export class SelectControlRender extends ControlRender {
 
     render(painter) {
         const control = this.control;
+        control.updateSelectPosition();
         this.selectionRect.updatePosition(control.minPoint, control.maxPoint);
 
         const selRect = this.selectionRect;

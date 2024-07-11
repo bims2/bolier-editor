@@ -11,12 +11,13 @@ export class TextUtil {
         ctx.save();
         ctx.font = `${initialFontSize} Arial`;
         const textWidth = ctx.measureText(text).width ?? 0.1;
+        ctx.restore();
+        console.log('font size', initialFontSize, 'width', textWidth);
         let scalingFactor = maxWidth / textWidth;
         if (scalingFactor <= 0 || textWidth <= 0) {
             console.log('textWidth', textWidth, 'factor', scalingFactor);
             return 0.1;
         }
-        ctx.restore();
 
         return initialFontSize * scalingFactor;
     }
@@ -34,10 +35,17 @@ export class TextUtil {
         // span.style.fontFamily = fontFamily;
         span.textContent = text;
 
+        ctx.save();
+        ctx.font = `${fontSize} Arial`;
+        const textWidth = ctx.measureText(text).width;
+        ctx.restore();
+
         document.body.appendChild(span);
         const width = span.offsetWidth;
         const height = span.offsetHeight;
         document.body.removeChild(span);
+
+        console.log('mearsure Text', textWidth, 'span Text', width);
 
         return {width: width, height: height};
     }

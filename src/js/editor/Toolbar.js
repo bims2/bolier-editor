@@ -4,6 +4,9 @@ import {FillColorAction} from "../command/undo/FillColorAction.js";
 import {LineStyle} from "./control/LineStyle.js";
 import {LineStyleAction} from "../command/undo/LineStyleAction.js";
 import {LineWidthAction} from "../command/undo/LineWidthAction.js";
+import {FontColorAction} from "../command/undo/FontColorAction.js";
+import {PointPosition} from "./control/PointPosition.js";
+import {TextUtil} from "./text/TextUtil.js";
 
 const COMMON_TOOLBAR_STYLE =
     'hidden pointer-events-auto flex items-center rounded-md border border-slate-300 ' +
@@ -78,24 +81,65 @@ export class Toolbar {
         fontToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const fontSizeWrap = document.createElement('p');
-        fontSizeWrap.className = 'w-12 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
+        fontSizeWrap.className = 'w-20 h-8 px-2 inline-flex items-center justify-center rounded hover:bg-slate-200';
 
         const fontSizeImg = document.createElement('img');
         fontSizeImg.src = './src/icon/font_size.png';
-        fontSizeImg.className = 'w-5 h-5 mr-2';
+        fontSizeImg.className = 'w-4 h-4 mr-2';
 
         const fontSize = document.createElement('input');
+        fontSize.id = 'font-size';
         fontSize.type = 'number';
-        fontSize.className = 'w-5 h-5';
+        fontSize.className = 'w-10 h-5 text-right';
+        fontSize.addEventListener('input', (e)=> {
+            let curVal = parseInt(e.target.value, 10);
+
+            if (e.inputType === 'insertFromPaste') {
+                return;
+            }
+
+            if (e.inputType === 'deleteContentBackward') {
+                return;
+            }
+
+            if (curVal <= 0) {
+                curVal = 1;
+                fontSize.value = 1;
+            }
+            const control = this._editor.page.selectControl.control;
+            control.fontSize = curVal;
+            const size = TextUtil.calculatorFontWidthHeight(control.text, control.fontSize);
+            const p1 = control.lt;
+            const p2 = control.rb;
+
+            p2.x = p1.x + size.width;
+            p2.y = p1.y + size.height;
+            control.lb.y = p1.y + size.height;
+            control.rt.x = p1.x + size.width;
+            control.updatePosition();
+            this._editor.render();
+        });
 
         fontSizeWrap.appendChild(fontSizeImg);
         fontSizeWrap.appendChild(fontSize);
 
+        const fontColorToolbar = this.#createColorToolbar('font-color',
+            {x: ToolbarPosition.FONT_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
+            color => {
+                const control = this._editor.page.selectControl.control;
+                this._editor.historyManager.startUndo(new FontColorAction('undo font color', control));
+                control.fontColor = color;
+                this._editor.historyManager.endUndo(new FontColorAction('redo font color', control));
+            }
+        );
+
         const fontColorBtn = this.#createButton('./src/icon/font_color.png', '', ()=> {
+            ToolbarUtil.getInstance().showFontColorToolbar();
         });
 
         fontToolbar.appendChild(fontSizeWrap);
         fontToolbar.appendChild(fontColorBtn);
+        fontToolbar.appendChild(fontColorToolbar);
 
         return fontToolbar;
     }
@@ -107,12 +151,12 @@ export class Toolbar {
 
         const lineWidthToolbar = this.#createLineWidthToolbar();
         const lineWidthBtn = this.#createButton('./src/icon/line_width.png', '', () => {
-            ToolbarUtil.showLineWidthToolbar();
+            ToolbarUtil.getInstance().showLineWidthToolbar();
         });
 
         const lineStyleToolbar = this.#createLineStyleToolbar();
         const lineStyleBtn = this.#createButton('./src/icon/line_style.png', '', () => {
-            ToolbarUtil.showLineStyleToolbar();
+            ToolbarUtil.getInstance().showLineStyleToolbar();
         });
 
         const lineColorToolbar = this.#createColorToolbar('line-color',
@@ -126,7 +170,7 @@ export class Toolbar {
         );
         lineColorToolbar.classList.add('bg-slate-200');
         const lineColorBtn = this.#createButton('./src/icon/line_color.png', '', () => {
-            ToolbarUtil.showLineColorToolbar();
+            ToolbarUtil.getInstance().showLineColorToolbar();
         });
 
         const fillColorToolbar = this.#createColorToolbar('fill-color',
@@ -140,7 +184,7 @@ export class Toolbar {
         );
         fillColorToolbar.classList.add('bg-slate-300');
         const fillColorBtn = this.#createButton('./src/icon/fill_color.png', '', () => {
-            ToolbarUtil.showFillColorToolbar();
+            ToolbarUtil.getInstance().showFillColorToolbar();
         });
         fillColorBtn.id = 'fill-color-btn';
 
@@ -157,11 +201,11 @@ export class Toolbar {
     }
 
     #createColorToolbar(id, p, setColor) {
-        const lineColorToolbar = document.createElement('div');
-        lineColorToolbar.id = id;
-        lineColorToolbar.style.left = p.x + 'px';
-        lineColorToolbar.style.top = p.y + 'px';
-        lineColorToolbar.className = COMMON_TOOLBAR_STYLE;
+        const colorToolbar = document.createElement('div');
+        colorToolbar.id = id;
+        colorToolbar.style.left = p.x + 'px';
+        colorToolbar.style.top = p.y + 'px';
+        colorToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const colorSet = ['rgb(255,255,255)', 'rgb(0,0,0)','rgb(113,113,113)',
             'rgb(216,61,27)', 'rgb(236,145,38)', 'rgb(233,186,31)',
@@ -171,10 +215,10 @@ export class Toolbar {
                 setColor(color);
                 this._editor.render();
             });
-            lineColorToolbar.appendChild(colorBtn);
+            colorToolbar.appendChild(colorBtn);
         });
 
-        return lineColorToolbar;
+        return colorToolbar;
     }
 
     #createLineStyleToolbar() {

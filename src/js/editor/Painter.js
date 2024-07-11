@@ -15,6 +15,7 @@ export class Painter {
         const x = label.minPoint.x;
         const y = label.maxPoint.y;
         this.ctx.font = `${label.fontSize}px Arial`;
+        this.ctx.fillStyle = label.fontColor;
         // this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'bottom';
         this.ctx.fillText(label.text, x, y);

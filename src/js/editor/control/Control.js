@@ -23,6 +23,7 @@ export class Control {
         this._lineColor = 'black';
         this._lineStyle = LineStyle.SOLID;
         this._fillColor = 'rgb(189,246,197)';
+        this._opacity = 0.5;
         this._select = false;
         this._hover = false;
         this._minPoint = { x: 0, y: 0};
@@ -64,6 +65,10 @@ export class Control {
 
     set fillColor(value) {
         this._fillColor = value;
+    }
+
+    get opacity() {
+        return this._opacity;
     }
 
     get select() {

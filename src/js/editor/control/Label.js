@@ -31,6 +31,10 @@ export class Label extends Rect {
         this._fontSize = value;
     }
 
+    get fontColor() {
+        return this._fontColor;
+    }
+
     set fontColor(value) {
         this._fontColor = value;
     }
