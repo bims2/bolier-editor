@@ -12,10 +12,8 @@ export class TextUtil {
         ctx.font = `${initialFontSize} Arial`;
         const textWidth = ctx.measureText(text).width ?? 0.1;
         ctx.restore();
-        console.log('font size', initialFontSize, 'width', textWidth);
         let scalingFactor = maxWidth / textWidth;
         if (scalingFactor <= 0 || textWidth <= 0) {
-            console.log('textWidth', textWidth, 'factor', scalingFactor);
             return 0.1;
         }
 
@@ -44,8 +42,6 @@ export class TextUtil {
         const width = span.offsetWidth;
         const height = span.offsetHeight;
         document.body.removeChild(span);
-
-        console.log('mearsure Text', textWidth, 'span Text', width);
 
         return {width: width, height: height};
     }

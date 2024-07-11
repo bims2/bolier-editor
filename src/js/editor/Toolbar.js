@@ -5,7 +5,6 @@ import {LineStyle} from "./control/LineStyle.js";
 import {LineStyleAction} from "../command/undo/LineStyleAction.js";
 import {LineWidthAction} from "../command/undo/LineWidthAction.js";
 import {FontColorAction} from "../command/undo/FontColorAction.js";
-import {PointPosition} from "./control/PointPosition.js";
 import {TextUtil} from "./text/TextUtil.js";
 
 const COMMON_TOOLBAR_STYLE =

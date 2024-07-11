@@ -1,8 +1,4 @@
 import {EventHandler} from "./EventHandler.js";
-import {Line} from "../editor/control/Line.js";
-import {Rect} from "../editor/control/Rect.js";
-import {Triangle} from "../editor/control/Triangle.js";
-import {Circle} from "../editor/control/Circle.js";
 
 export class ShortCutKeyEventHandler extends EventHandler {
     constructor() {
