@@ -92,15 +92,7 @@ export class Toolbar {
         fontSize.type = 'number';
         fontSize.className = 'w-10 h-5 text-right';
         fontSize.addEventListener('input', (e)=> {
-            let curVal = parseInt(e.target.value, 10);
-
-            if (e.inputType === 'insertFromPaste') {
-                return;
-            }
-
-            if (e.inputType === 'deleteContentBackward') {
-                return;
-            }
+            let curVal = e.target.value ? parseInt(e.target.value, 10) : 1;
 
             if (curVal <= 0) {
                 curVal = 1;
