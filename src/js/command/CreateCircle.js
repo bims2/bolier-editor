@@ -3,8 +3,7 @@ import {CreateCircleEventHandler} from "../event/CreateCircleEventHandler.js";
 
 export class CreateCircle extends Command {
     constructor(editor) {
-        super();
-        this.editor = editor;
+        super(editor);
         this.handler = new CreateCircleEventHandler(editor);
     }
 

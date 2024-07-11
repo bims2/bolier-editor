@@ -7,11 +7,16 @@ export class ResizeAction extends Action {
             points[idx] = p_.copy();
         });
 
+        const fontSize = control?.fontSize ?? 0;
         super(name, () => {
             for (let i = 0; i < control.points.length; ++i) {
                 control.points[i] = points[i];
             }
             control.updatePosition();
+
+            if (fontSize !== 0) {
+                control.fontSize = fontSize;
+            }
         });
     }
 }

@@ -3,8 +3,7 @@ import {CreateRectEventHandler} from "../event/CreateRectEventHandler.js";
 
 export class CreateRect extends Command {
     constructor(editor) {
-        super();
-        this.editor = editor;
+        super(editor);
         this.handler = new CreateRectEventHandler(editor);
     }
 

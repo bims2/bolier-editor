@@ -1,11 +1,12 @@
 import {Command} from "./Command.js";
-import {CreateImageEventHandler} from "../event/CreateImageEventHandler.js";
+import {CreateLabelEventHandler} from "../event/CreateLabelEventHandler.js";
 
-export class CreateImage extends Command {
-    constructor(editor, image) {
+export class CreateLabel extends Command {
+    constructor(editor) {
         super(editor);
-        this.handler = new CreateImageEventHandler(editor, image);
+        this.handler = new CreateLabelEventHandler(editor);
     }
+
 
     active() {
         this.editor.addEventHandler(this.handler);

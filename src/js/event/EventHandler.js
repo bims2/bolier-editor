@@ -4,6 +4,7 @@ export class EventHandler {
     get type() {
         return EventType.NONE;
     }
+    onDoubleClick(e) {}
     onMouseDown(e) {}
     onMouseMove(e) {}
     onMouseUp(e) {}
