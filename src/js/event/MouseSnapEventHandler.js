@@ -57,5 +57,8 @@ export class MouseSnapEventHandler extends EventHandler {
 
         point.x += wX;
         point.y += wY;
+
+        e._clientPoint.x = e.originEvent.clientX;
+        e._clientPoint.y = e.originEvent.clientY;
     }
 }

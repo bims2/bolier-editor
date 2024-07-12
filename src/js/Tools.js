@@ -9,6 +9,9 @@ import {Line} from "./editor/control/Line.js";
 import {Rect} from "./editor/control/Rect.js";
 import {Triangle} from "./editor/control/Triangle.js";
 import {Circle} from "./editor/control/Circle.js";
+import {Label} from "./editor/control/Label.js";
+import {CreateLabel} from "./command/CreateLabel.js";
+import {EditLabel} from "./command/EditLabel.js";
 
 export class Tools {
     constructor(editor) {
@@ -43,6 +46,19 @@ export class Tools {
             this.#imageOpen((img)=> {
                 this.commandManager.execute(new CreateImage(this.editor, img));
             });
+        }
+
+        this.createLabel = (p)=> {
+            editor.page.newControl = this.#initControl(p, new Label());
+            this.commandManager.execute(new CreateLabel(this.editor));
+            editor.render();
+        }
+
+        this.editeLabel = ()=> {
+            this.commandManager.execute(new EditLabel(this.editor));
+            this.editor.page.selectControl = null;
+            this.editor.page.hoverControl = null;
+            editor.render();
         }
 
         this.undo = () => {

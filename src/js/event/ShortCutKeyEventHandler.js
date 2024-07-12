@@ -1,8 +1,4 @@
 import {EventHandler} from "./EventHandler.js";
-import {Line} from "../editor/control/Line.js";
-import {Rect} from "../editor/control/Rect.js";
-import {Triangle} from "../editor/control/Triangle.js";
-import {Circle} from "../editor/control/Circle.js";
 
 export class ShortCutKeyEventHandler extends EventHandler {
     constructor() {
@@ -10,6 +6,10 @@ export class ShortCutKeyEventHandler extends EventHandler {
     }
 
     onKeyDown(e) {
+        if (!e.editor._enabledShortcut) {
+            return;
+        }
+
         const tools = e.editor.tools;
         switch (e.originEvent.key) {
             case 'q':
@@ -26,6 +26,9 @@ export class ShortCutKeyEventHandler extends EventHandler {
                 break;
             case 't':
                 tools.createImage();
+                break;
+            case 'a':
+                tools.createLabel(e.point);
                 break;
             case 'Escape':
                 tools.clear();

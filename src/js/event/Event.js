@@ -9,6 +9,8 @@ export class Event {
         this._curPoint = {x: 0, y: 0};
         this._originEvent = null;
 
+        this._clientPoint = {x: 0, y: 0};
+
         this._keyPressed = {};
     }
 
@@ -76,5 +78,9 @@ export class Event {
 
     set originEvent(e) {
         return this._originEvent = e;
+    }
+
+    get clientPoint() {
+        return this._clientPoint;
     }
 }

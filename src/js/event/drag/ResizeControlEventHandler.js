@@ -14,7 +14,6 @@ export class ResizeControlEventHandler extends EventHandler {
         e.downPoint.y = e.point.y;
 
         selControl.control.resize(resizeType, {x: mx, y: my});
-        selControl.control.updateSelectPosition();
         e.editor.render();
     }
 

@@ -14,6 +14,7 @@ export class MoveControlEventHandler extends EventHandler {
         e.downPoint.x = e.point.x;
         e.downPoint.y = e.point.y;
 
+        control.updateSelectPosition();
         e.editor.page.render();
     }
 

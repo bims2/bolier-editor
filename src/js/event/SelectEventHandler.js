@@ -7,6 +7,7 @@ import {PointPosition} from "../editor/control/PointPosition.js";
 import {ResizeControlEventHandler} from "./drag/ResizeControlEventHandler.js";
 import {ToolbarUtil} from "../editor/ToolbarUtil.js";
 import {ResizeAction} from "../command/undo/ResizeAction.js";
+import {ControlType} from "../editor/control/Control.js";
 
 export class SelectEventHandler extends EventHandler {
     constructor() {
@@ -15,6 +16,26 @@ export class SelectEventHandler extends EventHandler {
 
     get type() {
         return EventType.SELECT;
+    }
+
+    onDoubleClick(e) {
+        const page = e.editor.page;
+        if (page?.selectControl?.control?.type === ControlType.LABEL) {
+            const label = e.editor.page.selectControl.control;
+            e.editor.textEditor.updateLabel(label);
+
+            const p1 = label.lt;
+            const p2 = e.point;
+            const p3 = {x: p2.x - p1.x, y: p2.y - p1.y};
+            const dpr = e.editor.page.coordinate.dpr;
+            p3.x *= dpr;
+            p3.y *= dpr;
+
+            e.editor.textEditor.show({x: e.clientPoint.x - p3.x, y: e.clientPoint.y - p3.y});
+
+            e.editor.tools.editeLabel();
+            ToolbarUtil.getInstance().clear();
+        }
     }
 
     onMouseDown(e) {
@@ -48,7 +69,7 @@ export class SelectEventHandler extends EventHandler {
         const page = e.editor.page;
         page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
 
-        if (e.down && page.selectControl != null) {
+        if (e.down && page.selectControl !== null) {
             page.setCursor(CursorType.MOVE);
             e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectControl.control));
             e.editor.startDragHandler(new MoveControlEventHandler());
@@ -81,6 +102,13 @@ export class SelectEventHandler extends EventHandler {
             } else {
                 page.setCursor(CursorType.DEFAULT);
             }
+
+            if (page.selectControl.control.type === ControlType.LABEL &&
+                ((resizeType === PointPosition.L || resizeType === PointPosition.R) ||
+                (resizeType === PointPosition.T || resizeType === PointPosition.B))) {
+                page.setCursor(CursorType.DEFAULT);
+                page.selectControl.resizeType = PointPosition.NONE;
+            }
         } else {
             page.setCursor(CursorType.DEFAULT);
         }
@@ -95,8 +123,7 @@ export class SelectEventHandler extends EventHandler {
             return;
         }
 
-        ToolbarUtil.getInstance().showControlOptionToolbar(
-            { x: e.originEvent.offsetX, y: e.originEvent.offsetY }, page.selectControl.control);
+        ToolbarUtil.getInstance().showControlOptionToolbar(e.originPoint, page.selectControl.control);
     }
 
     onMouseWheel(e) {

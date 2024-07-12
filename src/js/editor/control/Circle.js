@@ -1,5 +1,4 @@
 import {HoverCircleRender} from "./render/HoverCircleRender.js";
-import {PointPosition} from "./PointPosition.js";
 import {Rect} from "./Rect.js";
 import {ControlType} from "./Control.js";
 

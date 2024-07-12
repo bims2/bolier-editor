@@ -5,4 +5,5 @@ export const CursorType = {
     RT_LB: 'nesw-resize',
     L_R: 'ew-resize',
     T_B: 'ns-resize',
+    TEXT: 'text',
 }

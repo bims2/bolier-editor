@@ -31,6 +31,5 @@ export class SelectControlRender extends ControlRender {
         painter.drawRect(resizeRect);
         painter.fill('white');
         painter.end();
-
     }
 }

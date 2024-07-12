@@ -25,6 +25,13 @@ export class EventManager {
         this.dragHandler = null;
     }
 
+    onDoubleClick(e) {
+        this.#setEvent(e);
+        this.handlers.forEach(h => {
+            h.onDoubleClick(this.event);
+        });
+    }
+
     onMouseDown(e) {
         this.#setEvent(e);
         this.handler.onMouseDown(this.event);
