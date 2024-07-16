@@ -6,6 +6,7 @@ import {LineStyleAction} from "../command/undo/LineStyleAction.js";
 import {LineWidthAction} from "../command/undo/LineWidthAction.js";
 import {FontColorAction} from "../command/undo/FontColorAction.js";
 import {TextUtil} from "./text/TextUtil.js";
+import {SvgIcon} from "../../icon/SvgIcon.js";
 
 const COMMON_TOOLBAR_STYLE =
     'hidden pointer-events-auto flex items-center rounded-md border border-slate-300 ' +
@@ -18,32 +19,28 @@ export class Toolbar {
         this._toolbarWrap.className = 'flex w-52 m-2';
     }
 
-    get toolbarWrap() {
-        return this._toolbarWrap;
-    }
-
     createToolbar(root) {
         const toolbar = document.createElement('div');
         toolbar.id = 'toolbar';
         toolbar.className =
             'pointer-events-auto flex items-center rounded-md border border-slate-200 ' +
             'shadow-sm bg-background text-foreground relative gap-0.5 p-0.5 p-1 pl-3 pr-1';
-        const lineBtn = this.#createButton('./src/icon/line.png', 'Q', () => {
+        const lineBtn = this.#createSvgButton(SvgIcon.makeLineIconConfig(), 'Q', () => {
             this._tools.createLine();
         });
-        const rectBtn = this.#createButton('./src/icon/rect.png', 'W', () => {
+        const rectBtn = this.#createSvgButton(SvgIcon.makeRectIconConfig(), 'W', () => {
             this._tools.createRect();
         });
-        const triangleBtn = this.#createButton('./src/icon/triangle.png', 'E', () => {
+        const triangleBtn = this.#createSvgButton(SvgIcon.makeTriangleIconConfig(), 'E', () => {
             this._tools.createTriangle();
         });
-        const circleBtn = this.#createButton('./src/icon/circle.png', 'R', () => {
+        const circleBtn = this.#createSvgButton(SvgIcon.makeCircleIconConfig(), 'R', () => {
             this._tools.createCircle();
         });
-        const imageBtn = this.#createButton('./src/icon/image.png', 'T', () => {
+        const imageBtn = this.#createSvgButton(SvgIcon.makeImageIconConfig(), 'T', () => {
             this._tools.createImage();
         });
-        const labelBtn = this.#createButton('./src/icon/label.png', 'A', ()=> {
+        const labelBtn = this.#createSvgButton(SvgIcon.makeLabelIconConfig(), 'A', ()=> {
            this._tools.createLabel();
         });
         toolbar.appendChild(lineBtn);
@@ -58,10 +55,10 @@ export class Toolbar {
         separator.role = 'none';
         toolbar.appendChild(separator);
 
-        const undoBtn = this.#createButton('./src/icon/undo.png', 'Z', ()=> {
+        const undoBtn = this.#createSvgButton(SvgIcon.makeUndoIconConfig(), 'Z', ()=> {
             this._tools.undo();
         });
-        const redoBtn = this.#createButton('./src/icon/redo.png', 'Y', ()=> {
+        const redoBtn = this.#createSvgButton(SvgIcon.makeRedoIconConfig(), 'Y', ()=> {
             this._tools.redo();
         });
         toolbar.appendChild(undoBtn);
@@ -78,13 +75,17 @@ export class Toolbar {
         const fontToolbar = document.createElement('div');
         fontToolbar.id = 'font-option';
         fontToolbar.className = COMMON_TOOLBAR_STYLE;
+        fontToolbar.classList.add('pl-2');
 
         const fontSizeWrap = document.createElement('p');
-        fontSizeWrap.className = 'w-20 h-8 px-2 inline-flex items-center justify-center rounded hover:bg-slate-200';
+        fontSizeWrap.className = 'w-20 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
 
         const fontSizeImg = document.createElement('img');
         fontSizeImg.src = './src/icon/font_size.png';
         fontSizeImg.className = 'w-4 h-4 mr-2';
+
+        const fontSizeIcon = this.#createSvgIcon(SvgIcon.makeFontSizeIconConfig());
+        fontSizeIcon.classList.add('mr-2');
 
         const fontSize = document.createElement('input');
         fontSize.id = 'font-size';
@@ -111,7 +112,7 @@ export class Toolbar {
             this._editor.render();
         });
 
-        fontSizeWrap.appendChild(fontSizeImg);
+        fontSizeWrap.appendChild(fontSizeIcon);
         fontSizeWrap.appendChild(fontSize);
 
         const fontColorToolbar = this.#createColorToolbar('font-color',
@@ -124,7 +125,7 @@ export class Toolbar {
             }
         );
 
-        const fontColorBtn = this.#createButton('./src/icon/font_color.png', '', ()=> {
+        const fontColorBtn = this.#createSvgButton(SvgIcon.makeFontColorIconConfig(), '', ()=> {
             ToolbarUtil.getInstance().showFontColorToolbar();
         });
 
@@ -141,12 +142,12 @@ export class Toolbar {
         lineToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const lineWidthToolbar = this.#createLineWidthToolbar();
-        const lineWidthBtn = this.#createButton('./src/icon/line_width.png', '', () => {
+        const lineWidthBtn = this.#createSvgButton(SvgIcon.makeLineWidthIconConfig(), '', () => {
             ToolbarUtil.getInstance().showLineWidthToolbar();
         });
 
         const lineStyleToolbar = this.#createLineStyleToolbar();
-        const lineStyleBtn = this.#createButton('./src/icon/line_style.png', '', () => {
+        const lineStyleBtn = this.#createSvgButton(SvgIcon.makeLineStyleIconConfig(), '', () => {
             ToolbarUtil.getInstance().showLineStyleToolbar();
         });
 
@@ -160,7 +161,7 @@ export class Toolbar {
             }
         );
         lineColorToolbar.classList.add('bg-slate-200');
-        const lineColorBtn = this.#createButton('./src/icon/line_color.png', '', () => {
+        const lineColorBtn = this.#createSvgButton(SvgIcon.makeLineColorIconConfig(), '', () => {
             ToolbarUtil.getInstance().showLineColorToolbar();
         });
 
@@ -174,7 +175,7 @@ export class Toolbar {
             }
         );
         fillColorToolbar.classList.add('bg-slate-300');
-        const fillColorBtn = this.#createButton('./src/icon/fill_color.png', '', () => {
+        const fillColorBtn = this.#createSvgButton(SvgIcon.makeFillColorIconConfig(), '', () => {
             ToolbarUtil.getInstance().showFillColorToolbar();
         });
         fillColorBtn.id = 'fill-color-btn';
@@ -219,14 +220,14 @@ export class Toolbar {
         lineStyleToolbar.style.top = ToolbarPosition.TOOLBAR_TOP + 'px';
         lineStyleToolbar.className = COMMON_TOOLBAR_STYLE;
 
-        const lineSolid = this.#createButton('./src/icon/line_width_1.png', '', () => {
+        const lineSolid = this.#createSvgButton(SvgIcon.makeLineSolidIconConfig(), '', () => {
             const control = this._editor.page.selectControl.control;
             this.#changeLineStyle(control, LineStyle.SOLID);
             this._editor.render();
         });
         lineStyleToolbar.appendChild(lineSolid);
 
-        const lineDash = this.#createButton('./src/icon/line_dash.png', '', () => {
+        const lineDash = this.#createSvgButton(SvgIcon.makeLineDashIconConfig(), '', () => {
             const control = this._editor.page.selectControl.control;
             this.#changeLineStyle(control, LineStyle.DASH);
             this._editor.render();
@@ -284,23 +285,22 @@ export class Toolbar {
         return btnWrap;
     }
 
-    #createButton(imgSrc, shortCutKey, clickEvent) {
+    #createSvgButton(svgConfig, shortCutKey, clickEvent) {
         const btnWrap = document.createElement('div');
         btnWrap.className = 'relative flex item-center justify-center mr-1';
 
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        img.className = 'w-5 h-5';
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = this.#createSvgIcon(svgConfig);
 
         const btn = document.createElement('button');
         btn.className = 'w-8 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
         btn.addEventListener('click', clickEvent);
 
-        btn.appendChild(img);
+        btn.appendChild(svg);
         btnWrap.appendChild(btn);
 
         if (shortCutKey !== '') {
-            img.classList.add('mr-2');
+            svg.classList.add('mr-2');
 
             const shortcutTxt = document.createElement('div');
             shortcutTxt.className = 'w-2 h-3 items-center justify-center absolute right-0 bottom-0 text-[8px] opacity-40';
@@ -309,5 +309,28 @@ export class Toolbar {
         }
 
         return btnWrap;
+    }
+
+    #createSvgIcon(svgConfig) {
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.style = svgConfig.style ?? '';
+        svg.setAttribute('xmlns', svgNS);
+        svg.setAttribute('width', svgConfig?.width ?? '20');
+        svg.setAttribute('height', svgConfig?.height ?? '20');
+        svg.setAttribute('viewBox', svgConfig.viewBox);
+
+        const g = document.createElementNS(svgNS, 'g');
+        g.setAttribute('transform', svgConfig.transform ?? '');
+
+        svgConfig.paths.forEach(path=> {
+            const pathTag = document.createElementNS(svgNS, 'path');
+            pathTag.setAttribute('d', path.d);
+            pathTag.style = path.style ?? '';
+            g.appendChild(pathTag);
+        });
+
+        svg.appendChild(g);
+        return svg;
     }
 }

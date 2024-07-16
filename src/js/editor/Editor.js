@@ -14,8 +14,8 @@ export class Editor {
 
         this.canvas = document.createElement('canvas');
         this.canvas.style.border = 'solid 2px #000';
-        this.canvas.width = width;
-        this.canvas.height = height;
+        this.canvas.width = width * 500;
+        this.canvas.height = height * 500;
 
         this.ctx = this.canvas.getContext('2d');
         this.page = new Page(this.ctx);
@@ -69,13 +69,17 @@ export class Editor {
 
     capture() {
         this.#captureRender();
-        const dataURL = this.canvas.toDataURL("image/png");
 
         const link = document.createElement('a');
-        link.href = dataURL;
+        link.href = this.save();
         link.download = 'canvas_image.png';
         link.click();
         this.render();
+    }
+
+    save() {
+        this.#captureRender();
+        return this.canvas.toDataURL("image/png");
     }
 
     #captureRender() {
