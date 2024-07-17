@@ -11,7 +11,16 @@ export class ShortCutKeyEventHandler extends EventHandler {
         }
 
         const tools = e.editor.tools;
-        switch (e.originEvent.key) {
+        const key = e.originEvent.key;
+        if (e.originEvent.metaKey && key === 's') {
+            e.originEvent.preventDefault();
+            tools.capture();
+            return;
+        }
+
+        switch (key) {
+            case '1':
+                break;
             case 'q':
                 tools.createLine(e.point);
                 break;

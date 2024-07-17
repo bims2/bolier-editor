@@ -80,10 +80,6 @@ export class Toolbar {
         const fontSizeWrap = document.createElement('p');
         fontSizeWrap.className = 'w-20 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
 
-        const fontSizeImg = document.createElement('img');
-        fontSizeImg.src = './src/icon/font_size.png';
-        fontSizeImg.className = 'w-4 h-4 mr-2';
-
         const fontSizeIcon = this.#createSvgIcon(SvgIcon.makeFontSizeIconConfig());
         fontSizeIcon.classList.add('mr-2');
 

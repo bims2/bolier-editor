@@ -61,6 +61,10 @@ export class Tools {
             editor.render();
         }
 
+        this.capture = ()=> {
+            this.editor.capture();
+        }
+
         this.undo = () => {
             historyManager.undo();
         }

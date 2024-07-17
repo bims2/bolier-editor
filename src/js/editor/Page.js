@@ -17,8 +17,6 @@ export class Page {
 
         this.gridSize = 25;
         this.gridCount = 5;
-
-        this.gridRender = true;
     }
 
     get controls() {
@@ -93,9 +91,11 @@ export class Page {
     }
 
     captureRender() {
-        this.gridRender = false;
-        this.render();
-        this.gridRender = true;
+        this.initTransform();
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this._controls.forEach(control => {
+            control.render(this.painter);
+        });
     }
 
     renderBackground() {
@@ -117,9 +117,6 @@ export class Page {
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
 
-        if (!this.gridRender) {
-            return;
-        }
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
     }
@@ -197,5 +194,9 @@ export class Page {
         };
 
         this.ctx.setTransform(dpr, 0, 0, dpr, orgPoint.x + orgWayPoint.x, orgPoint.y + orgWayPoint.y);
+    }
+
+    initTransform() {
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 }

@@ -1,8 +1,6 @@
 export class SvgIcon {
     static makeLineIconConfig() {
         return {
-            width: '65%',
-            height: '65%',
             viewBox: '0 0 512.000000 512.000000',
             transform: 'translate(0.000000,512.000000) scale(0.100000,-0.100000)',
             paths: [

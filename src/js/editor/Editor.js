@@ -5,12 +5,12 @@ import {ToolbarUtil} from "./ToolbarUtil.js";
 import {HistoryManager} from "./HistoryManager.js";
 import {TextEditor} from "./text/TextEditor.js";
 import {Toolbar} from "./Toolbar.js";
+// import "../../css/style.css"
 
 export class Editor {
     constructor(id, {width, height}) {
         const root = document.getElementById(id);
         root.className = 'm-5';
-
 
         this.canvas = document.createElement('canvas');
         this.canvas.style.border = 'solid 2px #000';
@@ -74,12 +74,15 @@ export class Editor {
         link.href = this.save();
         link.download = 'canvas_image.png';
         link.click();
-        this.render();
     }
 
     save() {
+        this.ctx.save();
         this.#captureRender();
-        return this.canvas.toDataURL("image/png");
+        const base64 = this.canvas.toDataURL("image/png");
+        this.ctx.restore();
+        this.render();
+        return base64;
     }
 
     #captureRender() {
