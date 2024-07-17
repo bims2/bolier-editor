@@ -2,7 +2,7 @@ import {Painter} from "./Painter.js";
 import {Coordinate} from "./Coordinate.js";
 
 const MAX_DPR = 10;
-const MIN_DPR = 0.1;
+const MIN_DPR = 1;
 export class Page {
     constructor(ctx) {
         this.ctx = ctx;
@@ -17,6 +17,14 @@ export class Page {
 
         this.gridSize = 25;
         this.gridCount = 5;
+    }
+
+    get width() {
+        return this.ctx.canvas.width;
+    }
+
+    get height() {
+        return this.ctx.canvas.height;
     }
 
     get controls() {
@@ -115,7 +123,15 @@ export class Page {
         const sY = -orgPoint.y / dpr - wayPoint.y;
         const eY = sY + height;
 
+        // console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
+
+        const orgWidth = this.ctx.canvas.width;
+        const orgHeight = this.ctx.canvas.height;
+        this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'blue', 3, 1);
+        this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'blue', 3, 1);
+        this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'blue', 3, 1);
+        this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'blue', 3, 1);
 
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
@@ -152,18 +168,30 @@ export class Page {
     }
 
     scaleIn() {
-        if (this._coordinate.dpr > MAX_DPR) {
+        const coordinate = this.coordinate;
+        if (coordinate.dpr === MAX_DPR) {
             return;
         }
-        this.scale(1.05);
+
+        let dpr = 1.05;
+        if (coordinate.dpr > MAX_DPR) {
+            dpr = MAX_DPR / coordinate.dpr;
+        }
+        this.scale(dpr);
         this.render();
     }
 
     scaleOut() {
-        if (this._coordinate.dpr < MIN_DPR) {
+        const coordinate = this.coordinate;
+        if (coordinate.dpr === MIN_DPR) {
             return;
         }
-        this.scale(0.95);
+
+        let dpr = 0.95;
+        if (coordinate.dpr < MIN_DPR) {
+            dpr = MIN_DPR / coordinate.dpr;
+        }
+        this.scale(dpr);
         this.render();
     }
 
@@ -180,6 +208,20 @@ export class Page {
             y: coordinate.curPoint.y - (coordinate.curPoint.y - oldOrigin.y) * dpr
         };
 
+        const orgPoint = coordinate.orgPoint;
+        const wayPoint = coordinate.wayPoint;
+        const sX = -orgPoint.x / dpr - wayPoint.x;
+        if (sX <= 0) {
+            wayPoint.x = -orgPoint.x;
+        }
+        // const eX = sX + width;
+        const sY = -orgPoint.y / dpr - wayPoint.y;
+        if (sY <= 0) {
+            wayPoint.y = -orgPoint.y;
+        }
+        console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
+        // const eY = sY + height;
+
         this.transform();
     }
 
@@ -193,6 +235,7 @@ export class Page {
             y: wayPoint.y * dpr
         };
 
+        // console.log('wayPoint', wayPoint, 'orgPoint', orgPoint);
         this.ctx.setTransform(dpr, 0, 0, dpr, orgPoint.x + orgWayPoint.x, orgPoint.y + orgWayPoint.y);
     }
 

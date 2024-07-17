@@ -20,6 +20,14 @@ export class ShortCutKeyEventHandler extends EventHandler {
 
         switch (key) {
             case '1':
+                e.editor.page.coordinate.wayPoint.x = 0;
+                e.editor.page.coordinate.wayPoint.y = 0;
+                e.editor.render();
+                break;
+            case '2':
+                e.editor.page.coordinate.orgPoint.x = 0;
+                e.editor.page.coordinate.orgPoint.y = 0;
+                e.editor.render();
                 break;
             case 'q':
                 tools.createLine(e.point);
