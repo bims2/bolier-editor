@@ -191,4 +191,16 @@ export class Control {
         return (rect.lt.x <= p.x && p.x <= rect.rb.x &&
                 rect.lt.y <= p.y && p.y <= rect.rb.y)
     }
+
+    clone(control) {
+        control.lineWidth = this.lineWidth;
+        control.lineColor = this.lineColor;
+        control.lineStyle = this.lineStyle;
+        control.fillColor = this.fillColor;
+        control.opacity = this.opacity;
+        control.minPoint.x = this.minPoint.x;
+        control.minPoint.y = this.minPoint.y;
+        control.maxPoint.x = this.maxPoint.x;
+        control.maxPoint.y = this.maxPoint.y;
+    }
 }
