@@ -46,6 +46,9 @@ export class ShortCutKeyEventHandler extends EventHandler {
             case 'y':
                 tools.redo();
                 break;
+            case 'Backspace':
+                tools.removeControl();
+                break;
             default:
                 console.log(e.originEvent.key);
                 break;

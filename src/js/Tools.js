@@ -12,6 +12,8 @@ import {Circle} from "./editor/control/Circle.js";
 import {Label} from "./editor/control/Label.js";
 import {CreateLabel} from "./command/CreateLabel.js";
 import {EditLabel} from "./command/EditLabel.js";
+import {Action} from "./command/undo/Action.js";
+import {ToolbarUtil} from "./editor/ToolbarUtil.js";
 
 export class Tools {
     constructor(editor) {
@@ -59,6 +61,20 @@ export class Tools {
             this.editor.page.selectControl = null;
             this.editor.page.hoverControl = null;
             editor.render();
+        }
+
+        this.removeControl = ()=> {
+            const control = editor.page?.selectControl?.control;
+            if (!control) {
+                return;
+            }
+
+            ToolbarUtil.getInstance().clear();
+            historyManager.startUndo(new Action(`undo remove ${control.type} control`,
+                ()=> editor.page.addControl(control)));
+            editor.page.removeControl(control);
+            historyManager.endUndo(new Action(`redo remove ${control.type} control`,
+                ()=> editor.page.removeControl(control)));
         }
 
         this.capture = ()=> {
