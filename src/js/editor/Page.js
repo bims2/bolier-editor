@@ -2,7 +2,7 @@ import {Painter} from "./Painter.js";
 import {Coordinate} from "./Coordinate.js";
 
 const MAX_DPR = 10;
-const MIN_DPR = 0.1;
+const MIN_DPR = 1;
 export class Page {
     constructor(ctx) {
         this.ctx = ctx;
@@ -17,6 +17,14 @@ export class Page {
 
         this.gridSize = 25;
         this.gridCount = 5;
+    }
+
+    get width() {
+        return this.ctx.canvas.width;
+    }
+
+    get height() {
+        return this.ctx.canvas.height;
     }
 
     get controls() {
@@ -115,7 +123,15 @@ export class Page {
         const sY = -orgPoint.y / dpr - wayPoint.y;
         const eY = sY + height;
 
+        // console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
+
+        const orgWidth = this.ctx.canvas.width;
+        const orgHeight = this.ctx.canvas.height;
+        this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'blue', 3, 1);
+        this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'blue', 3, 1);
+        this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'blue', 3, 1);
+        this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'blue', 3, 1);
 
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
@@ -152,18 +168,30 @@ export class Page {
     }
 
     scaleIn() {
-        if (this._coordinate.dpr > MAX_DPR) {
+        const coordinate = this.coordinate;
+        if (coordinate.dpr === MAX_DPR) {
             return;
         }
-        this.scale(1.05);
+
+        let dpr = 1.05;
+        if (coordinate.dpr > MAX_DPR) {
+            dpr = MAX_DPR / coordinate.dpr;
+        }
+        this.scale(dpr);
         this.render();
     }
 
     scaleOut() {
-        if (this._coordinate.dpr < MIN_DPR) {
+        const coordinate = this.coordinate;
+        if (coordinate.dpr === MIN_DPR) {
             return;
         }
-        this.scale(0.95);
+
+        let dpr = 0.95;
+        if (coordinate.dpr < MIN_DPR) {
+            dpr = MIN_DPR / coordinate.dpr;
+        }
+        this.scale(dpr);
         this.render();
     }
 
@@ -179,6 +207,77 @@ export class Page {
             x: coordinate.curPoint.x - (coordinate.curPoint.x - oldOrigin.x) * dpr,
             y: coordinate.curPoint.y - (coordinate.curPoint.y - oldOrigin.y) * dpr
         };
+
+        // FIXME: 배율이 100일때 zoom out시 화면이 튀는 현상
+        const orgPoint = coordinate.orgPoint;
+        const wayPoint = coordinate.wayPoint;
+        let minX = -orgPoint.x / coordinate.dpr - wayPoint.x;
+        const maxX = this.width;
+        const oldOrgX = oldOrigin.x;
+        if (minX < 0) {
+            console.log('min');
+            let orgX = orgPoint.x + (minX * coordinate.dpr);
+            let curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            orgX = curX - (curX - oldOrigin.x) * dpr
+            // const xGqp =  (-orgPoint.x / dpr - wayPoint.x) * dpr;
+            // orgX += xGqp;
+            // curX = curX = Math.round((orgX-oldOrgX*dpr)/(1-dpr));
+            // console.log(`(${orgX} - ${oldOrgX} * ${dpr}) / (1 - ${dpr})`);
+            console.log('curX', coordinate.curPoint.x, 'change curX', curX, 'dpr', dpr, 'orgPoint', orgPoint);
+            coordinate.curPoint.x = curX;
+            orgPoint.x = orgX;
+        } else if (maxX < this.width/coordinate.dpr + minX) {
+            console.log('max');
+            const xGap = (this.width/coordinate.dpr + minX) - maxX;
+            console.log(this.width/coordinate.dpr + minX, 'xGap', xGap);
+            let orgX = orgPoint.x + xGap * coordinate.dpr;
+            let curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            orgX = curX - (curX - oldOrigin.x) * dpr;
+
+            // orgPoint.x = orgX;
+            // minX = -orgPoint.x / coordinate.dpr - wayPoint.x;
+            // if (minX <= 0) {
+            //     orgX = orgPoint.x + (minX * coordinate.dpr);
+            //     curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            //     orgX = curX - (curX - oldOrigin.x) * dpr;
+            // }
+
+            coordinate.curPoint.x = curX;
+            orgPoint.x = orgX;
+        }
+
+        let minY = -orgPoint.y / coordinate.dpr - wayPoint.y;
+        const maxY = this.height;
+        const oldOrgY = oldOrigin.y;
+        if (minY < 0) {
+            let orgY = orgPoint.y + (minY * coordinate.dpr);
+            let curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            orgY = curY - (curY - oldOrigin.y) * dpr
+            coordinate.curPoint.y = curY;
+            orgPoint.y = orgY;
+        } else if (maxY < this.height/coordinate.dpr + minY) {
+            console.log('max');
+            const yGap = (this.height/coordinate.dpr + minY) - maxY;
+            console.log(this.height/coordinate.dpr + minY, 'yGap', yGap);
+            let orgY = orgPoint.y + yGap * coordinate.dpr;
+            let curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            orgY = curY - (curY - oldOrigin.y) * dpr;
+
+            // orgPoint.y = orgY;
+            // minY = -orgPoint.y / coordinate.dpr - wayPoint.y;
+            // if (minY <= 0) {
+            //     orgY = orgPoint.y + (minY * coordinate.dpr);
+            //     curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            //     orgY = curY - (curY - oldOrigin.y) * dpr;
+            // }
+
+            coordinate.curPoint.y = curY;
+            orgPoint.y = orgY;
+        }
+
+        const curPoint = coordinate.curPoint;
+        console.log('sX', minX, 'sY', minY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint, 'curPoint', curPoint, 'dpr', coordinate.dpr);
+        // console.log('pageWidth dpr', this.width / coordinate.dpr, 'pageHeight dpr', this.height / coordinate.dpr);
 
         this.transform();
     }
