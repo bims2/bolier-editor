@@ -208,19 +208,76 @@ export class Page {
             y: coordinate.curPoint.y - (coordinate.curPoint.y - oldOrigin.y) * dpr
         };
 
+        // FIXME: 배율이 100일때 zoom out시 화면이 튀는 현상
         const orgPoint = coordinate.orgPoint;
         const wayPoint = coordinate.wayPoint;
-        const sX = -orgPoint.x / dpr - wayPoint.x;
-        if (sX <= 0) {
-            wayPoint.x = -orgPoint.x;
+        let minX = -orgPoint.x / coordinate.dpr - wayPoint.x;
+        const maxX = this.width;
+        const oldOrgX = oldOrigin.x;
+        if (minX < 0) {
+            console.log('min');
+            let orgX = orgPoint.x + (minX * coordinate.dpr);
+            let curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            orgX = curX - (curX - oldOrigin.x) * dpr
+            // const xGqp =  (-orgPoint.x / dpr - wayPoint.x) * dpr;
+            // orgX += xGqp;
+            // curX = curX = Math.round((orgX-oldOrgX*dpr)/(1-dpr));
+            // console.log(`(${orgX} - ${oldOrgX} * ${dpr}) / (1 - ${dpr})`);
+            console.log('curX', coordinate.curPoint.x, 'change curX', curX, 'dpr', dpr, 'orgPoint', orgPoint);
+            coordinate.curPoint.x = curX;
+            orgPoint.x = orgX;
+        } else if (maxX < this.width/coordinate.dpr + minX) {
+            console.log('max');
+            const xGap = (this.width/coordinate.dpr + minX) - maxX;
+            console.log(this.width/coordinate.dpr + minX, 'xGap', xGap);
+            let orgX = orgPoint.x + xGap * coordinate.dpr;
+            let curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            orgX = curX - (curX - oldOrigin.x) * dpr;
+
+            // orgPoint.x = orgX;
+            // minX = -orgPoint.x / coordinate.dpr - wayPoint.x;
+            // if (minX <= 0) {
+            //     orgX = orgPoint.x + (minX * coordinate.dpr);
+            //     curX = (orgX-oldOrgX*dpr)/(1-dpr);
+            //     orgX = curX - (curX - oldOrigin.x) * dpr;
+            // }
+
+            coordinate.curPoint.x = curX;
+            orgPoint.x = orgX;
         }
-        // const eX = sX + width;
-        const sY = -orgPoint.y / dpr - wayPoint.y;
-        if (sY <= 0) {
-            wayPoint.y = -orgPoint.y;
+
+        let minY = -orgPoint.y / coordinate.dpr - wayPoint.y;
+        const maxY = this.height;
+        const oldOrgY = oldOrigin.y;
+        if (minY < 0) {
+            let orgY = orgPoint.y + (minY * coordinate.dpr);
+            let curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            orgY = curY - (curY - oldOrigin.y) * dpr
+            coordinate.curPoint.y = curY;
+            orgPoint.y = orgY;
+        } else if (maxY < this.height/coordinate.dpr + minY) {
+            console.log('max');
+            const yGap = (this.height/coordinate.dpr + minY) - maxY;
+            console.log(this.height/coordinate.dpr + minY, 'yGap', yGap);
+            let orgY = orgPoint.y + yGap * coordinate.dpr;
+            let curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            orgY = curY - (curY - oldOrigin.y) * dpr;
+
+            // orgPoint.y = orgY;
+            // minY = -orgPoint.y / coordinate.dpr - wayPoint.y;
+            // if (minY <= 0) {
+            //     orgY = orgPoint.y + (minY * coordinate.dpr);
+            //     curY = (orgY-oldOrgY*dpr)/(1-dpr);
+            //     orgY = curY - (curY - oldOrigin.y) * dpr;
+            // }
+
+            coordinate.curPoint.y = curY;
+            orgPoint.y = orgY;
         }
-        console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
-        // const eY = sY + height;
+
+        const curPoint = coordinate.curPoint;
+        console.log('sX', minX, 'sY', minY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint, 'curPoint', curPoint, 'dpr', coordinate.dpr);
+        // console.log('pageWidth dpr', this.width / coordinate.dpr, 'pageHeight dpr', this.height / coordinate.dpr);
 
         this.transform();
     }
@@ -235,7 +292,6 @@ export class Page {
             y: wayPoint.y * dpr
         };
 
-        // console.log('wayPoint', wayPoint, 'orgPoint', orgPoint);
         this.ctx.setTransform(dpr, 0, 0, dpr, orgPoint.x + orgWayPoint.x, orgPoint.y + orgWayPoint.y);
     }
 
