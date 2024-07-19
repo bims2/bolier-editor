@@ -86,4 +86,11 @@ export class Triangle extends Polygon {
         }
         return null;
     }
+
+    clone(control) {
+        this.top.clone(control.top);
+        this.left.clone(control.left);
+        this.right.clone(control.right);
+        super.clone(control);
+    }
 }

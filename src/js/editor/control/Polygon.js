@@ -254,4 +254,8 @@ export class Polygon extends Control {
     ptInSelectControl(p) {
         return super.ptInSelectControl(p);
     }
+
+    clone(control) {
+        super.clone(control);
+    }
 }

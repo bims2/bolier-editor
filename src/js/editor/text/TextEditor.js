@@ -27,7 +27,7 @@ export class TextEditor {
 
         this._input = document.createElement('input');
         this._input.id = 'text-editor';
-        this._input.className = 'absolute pl-1 bg-transparent focus:border-transparent';
+        this._input.className = 'hidden absolute outline-0 pl-1 bg-transparent focus:border-transparent';
 
         this._input.addEventListener('keydown', (e)=> {
             this.update();

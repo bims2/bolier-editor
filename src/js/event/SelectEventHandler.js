@@ -20,8 +20,8 @@ export class SelectEventHandler extends EventHandler {
 
     onDoubleClick(e) {
         const page = e.editor.page;
-        if (page?.selectControl?.control?.type === ControlType.LABEL) {
-            const label = e.editor.page.selectControl.control;
+        if (page?.selectRender?.control?.type === ControlType.LABEL) {
+            const label = e.editor.page.selectRender.control;
             e.editor.textEditor.updateLabel(label);
 
             const p1 = label.lt;
@@ -41,8 +41,8 @@ export class SelectEventHandler extends EventHandler {
     onMouseDown(e) {
         const page = e.editor.page;
 
-        if (page.selectControl !== null && page.selectControl.resizeType !== PointPosition.NONE) {
-            e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectControl.control));
+        if (page.selectRender !== null && page.selectRender.resizeType !== PointPosition.NONE) {
+            e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectRender.control));
             e.editor.startDragHandler(new ResizeControlEventHandler());
             return;
         }
@@ -56,7 +56,7 @@ export class SelectEventHandler extends EventHandler {
             }
         }
 
-        page.selectControl = render;
+        page.selectRender = render;
         if (render === null) {
             ToolbarUtil.getInstance().hideLineOptionToolbar()
             e.editor.startDragHandler(new DragPageEventHandler());
@@ -69,9 +69,9 @@ export class SelectEventHandler extends EventHandler {
         const page = e.editor.page;
         page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
 
-        if (e.down && page.selectControl !== null) {
+        if (e.down && page.selectRender !== null) {
             page.setCursor(CursorType.MOVE);
-            e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectControl.control));
+            e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectRender.control));
             e.editor.startDragHandler(new MoveControlEventHandler());
             return;
         }
@@ -85,10 +85,10 @@ export class SelectEventHandler extends EventHandler {
             }
         }
 
-        if (page.selectControl !== null) {
-            const selControl = page.selectControl.control;
+        if (page.selectRender !== null) {
+            const selControl = page.selectRender.control;
             const resizeType = selControl.ptInResizePoint(e.point);
-            page.selectControl.resizeType = resizeType;
+            page.selectRender.resizeType = resizeType;
             if (resizeType === PointPosition.LT || resizeType === PointPosition.RB) {
                 page.setCursor(CursorType.LT_RB);
             } else if (resizeType === PointPosition.RT || resizeType === PointPosition.LB) {
@@ -97,33 +97,33 @@ export class SelectEventHandler extends EventHandler {
                 page.setCursor(CursorType.L_R)
             } else if (resizeType === PointPosition.T || resizeType === PointPosition.B) {
                 page.setCursor(CursorType.T_B)
-            } else if (render !== null && page.selectControl.control === render.control) {
+            } else if (render !== null && page.selectRender.control === render.control) {
                 page.setCursor(CursorType.MOVE);
             } else {
                 page.setCursor(CursorType.DEFAULT);
             }
 
-            if (page.selectControl.control.type === ControlType.LABEL &&
+            if (page.selectRender.control.type === ControlType.LABEL &&
                 ((resizeType === PointPosition.L || resizeType === PointPosition.R) ||
                 (resizeType === PointPosition.T || resizeType === PointPosition.B))) {
                 page.setCursor(CursorType.DEFAULT);
-                page.selectControl.resizeType = PointPosition.NONE;
+                page.selectRender.resizeType = PointPosition.NONE;
             }
         } else {
             page.setCursor(CursorType.DEFAULT);
         }
 
-        page.hoverControl = render;
+        page.hoverRender = render;
         page.render();
     }
 
     onMouseUp(e) {
         const page = e.editor.page;
-        if (page.selectControl === null) {
+        if (page.selectRender === null) {
             return;
         }
 
-        ToolbarUtil.getInstance().showControlOptionToolbar(e.originPoint, page.selectControl.control);
+        ToolbarUtil.getInstance().showControlOptionToolbar(e.originPoint, page.selectRender.control);
     }
 
     onMouseWheel(e) {

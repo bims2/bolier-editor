@@ -63,4 +63,12 @@ export class Line extends Polygon {
     ptInSelectControl(p) {
         return super.ptInSelectControl(p);
     }
+
+    clone(control) {
+        this.p1.x = control.p1.x;
+        this.p1.y = control.p1.y;
+        this.p2.x = control.p2.x;
+        this.p2.y = control.p2.y;
+        super.clone(control);
+    }
 }

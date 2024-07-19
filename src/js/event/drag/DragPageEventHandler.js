@@ -19,11 +19,32 @@ export class DragPageEventHandler extends EventHandler {
         const coordinate = page.coordinate;
         const downPoint = e.downPoint;
 
-        const mx = e.point.x - downPoint.x;
-        const my = e.point.y - downPoint.y;
+        let mx = e.point.x - downPoint.x;
+        let my = e.point.y - downPoint.y;
 
-        coordinate.wayPoint.x += mx;
-        coordinate.wayPoint.y += my;
+        const orgPoint = coordinate.orgPoint;
+        const dpr = coordinate.dpr;
+        const wayPoint = coordinate.wayPoint;
+
+        const minX = -orgPoint.x / dpr;
+        const maxX = page.width;
+        const x = wayPoint.x + mx;
+        if (minX < x) {
+            mx = minX - wayPoint.x;
+        } else if (maxX < (page.width/dpr - x + minX)) {
+            mx = (page.width/dpr - wayPoint.x + minX) - maxX;
+        }
+        wayPoint.x += mx;
+
+        const minY = -orgPoint.y / dpr;
+        const maxY = page.height;
+        const y = wayPoint.y + my
+        if (minY < y) {
+            my = minY - wayPoint.y;
+        } else if (maxY < (page.height/dpr - y + minY)) {
+            my = (page.height/dpr - wayPoint.y + minY) - maxY;
+        }
+        wayPoint.y += my;
 
         page.render();
     }

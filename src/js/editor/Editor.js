@@ -5,17 +5,17 @@ import {ToolbarUtil} from "./ToolbarUtil.js";
 import {HistoryManager} from "./HistoryManager.js";
 import {TextEditor} from "./text/TextEditor.js";
 import {Toolbar} from "./Toolbar.js";
+// import "../../css/style.css"
 
 export class Editor {
     constructor(id, {width, height}) {
         const root = document.getElementById(id);
         root.className = 'm-5';
 
-
         this.canvas = document.createElement('canvas');
         this.canvas.style.border = 'solid 2px #000';
-        this.canvas.width = width;
-        this.canvas.height = height;
+        this.canvas.width = width * 500;
+        this.canvas.height = height * 500;
 
         this.ctx = this.canvas.getContext('2d');
         this.page = new Page(this.ctx);
@@ -69,13 +69,20 @@ export class Editor {
 
     capture() {
         this.#captureRender();
-        const dataURL = this.canvas.toDataURL("image/png");
 
         const link = document.createElement('a');
-        link.href = dataURL;
+        link.href = this.save();
         link.download = 'canvas_image.png';
         link.click();
+    }
+
+    save() {
+        this.ctx.save();
+        this.#captureRender();
+        const base64 = this.canvas.toDataURL("image/png");
+        this.ctx.restore();
         this.render();
+        return base64;
     }
 
     #captureRender() {

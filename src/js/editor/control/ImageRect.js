@@ -16,6 +16,10 @@ export class ImageRect extends Rect {
         return this._image;
     }
 
+    set image(value) {
+        this._image = value;
+    }
+
     setPosition(p) {
         super.setPosition(p);
     }
@@ -25,5 +29,10 @@ export class ImageRect extends Rect {
         const height = this.rb.y - this.lt.y;
         painter.drawImage(this._image, this.lt.x, this.lt.y, width, height);
         super.render(painter);
+    }
+
+    clone(control) {
+        super.clone(control);
+        this._image = control.image;
     }
 }

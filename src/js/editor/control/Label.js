@@ -69,4 +69,12 @@ export class Label extends Rect {
         // super.render(painter);
         painter.drawLabel(this);
     }
+
+
+    clone(control) {
+        super.clone(control);
+        this.text = control.text;
+        this.fontSize = control.fontSize;
+        this.fontColor = control.fontColor;
+    }
 }
