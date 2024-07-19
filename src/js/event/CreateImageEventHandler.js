@@ -21,7 +21,7 @@ export class CreateImageEventHandler extends EventHandler {
     }
 
     onMouseDown(e) {
-        e.editor.page.selectControl = null;
+        e.editor.page.selectRender = null;
     }
 
     onMouseMove(e) {

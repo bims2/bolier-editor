@@ -97,4 +97,12 @@ export class Rect extends Polygon {
         }
         return null;
     }
+
+    clone(control) {
+        this.lt.clone(control.lt);
+        this.rt.clone(control.rt);
+        this.rb.clone(control.rb);
+        this.lb.clone(control.lb);
+        super.clone(control);
+    }
 }

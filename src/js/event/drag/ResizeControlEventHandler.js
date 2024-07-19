@@ -4,7 +4,7 @@ import {ResizeAction} from "../../command/undo/ResizeAction.js";
 export class ResizeControlEventHandler extends EventHandler {
 
     onMouseMove(e) {
-        const selControl = e.editor.page.selectControl;
+        const selControl = e.editor.page.selectRender;
         const resizeType = selControl.resizeType;
 
         const mx = e.point.x - e.downPoint.x;
@@ -18,7 +18,7 @@ export class ResizeControlEventHandler extends EventHandler {
     }
 
     onMouseUp(e) {
-        const control = e.editor.page.selectControl.control;
+        const control = e.editor.page.selectRender.control;
         control.updatePointPosition();
         control.updatePointRatio();
 

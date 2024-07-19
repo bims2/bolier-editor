@@ -71,6 +71,10 @@ export class Control {
         return this._opacity;
     }
 
+    set opacity(value) {
+        this._opacity = value;
+    }
+
     get select() {
         return this._select;
     }
@@ -190,5 +194,13 @@ export class Control {
     #checkPoint(rect, p) {
         return (rect.lt.x <= p.x && p.x <= rect.rb.x &&
                 rect.lt.y <= p.y && p.y <= rect.rb.y)
+    }
+
+    clone(control) {
+        this.lineWidth = control.lineWidth;
+        this.lineColor = control.lineColor;
+        this.lineStyle = control.lineStyle;
+        this.fillColor = control.fillColor;
+        this.opacity = control.opacity;
     }
 }

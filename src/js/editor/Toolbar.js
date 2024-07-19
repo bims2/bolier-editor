@@ -94,7 +94,7 @@ export class Toolbar {
                 curVal = 1;
                 fontSize.value = 1;
             }
-            const control = this._editor.page.selectControl.control;
+            const control = this._editor.page.selectRender.control;
             control.fontSize = curVal;
             const size = TextUtil.calculatorFontWidthHeight(control.text, control.fontSize);
             const p1 = control.lt;
@@ -114,7 +114,7 @@ export class Toolbar {
         const fontColorToolbar = this.#createColorToolbar('font-color',
             {x: ToolbarPosition.FONT_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
             color => {
-                const control = this._editor.page.selectControl.control;
+                const control = this._editor.page.selectRender.control;
                 this._editor.historyManager.startUndo(new FontColorAction('undo font color', control));
                 control.fontColor = color;
                 this._editor.historyManager.endUndo(new FontColorAction('redo font color', control));
@@ -150,7 +150,7 @@ export class Toolbar {
         const lineColorToolbar = this.#createColorToolbar('line-color',
             {x: ToolbarPosition.LINE_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
             color => {
-                const control = this._editor.page.selectControl.control;
+                const control = this._editor.page.selectRender.control;
                 this._editor.historyManager.startUndo(new LineColorAction('undo line color', control));
                 control.lineColor = color;
                 this._editor.historyManager.endUndo(new LineColorAction('redo line color', control));
@@ -164,9 +164,9 @@ export class Toolbar {
         const fillColorToolbar = this.#createColorToolbar('fill-color',
             {x: ToolbarPosition.LINE_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
             color => {
-                const control = this._editor.page.selectControl.control;
+                const control = this._editor.page.selectRender.control;
                 this._editor.historyManager.startUndo(new FillColorAction('undo fill color', control));
-                this._editor.page.selectControl.control.fillColor = color;
+                this._editor.page.selectRender.control.fillColor = color;
                 this._editor.historyManager.endUndo(new FillColorAction('redo fill color', control));
             }
         );
@@ -217,14 +217,14 @@ export class Toolbar {
         lineStyleToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const lineSolid = this.#createSvgButton(SvgIcon.makeLineSolidIconConfig(), '', () => {
-            const control = this._editor.page.selectControl.control;
+            const control = this._editor.page.selectRender.control;
             this.#changeLineStyle(control, LineStyle.SOLID);
             this._editor.render();
         });
         lineStyleToolbar.appendChild(lineSolid);
 
         const lineDash = this.#createSvgButton(SvgIcon.makeLineDashIconConfig(), '', () => {
-            const control = this._editor.page.selectControl.control;
+            const control = this._editor.page.selectRender.control;
             this.#changeLineStyle(control, LineStyle.DASH);
             this._editor.render();
         });
@@ -250,7 +250,7 @@ export class Toolbar {
             const lineWidthBtn = document.createElement('button');
             lineWidthBtn.className = 'w-8 h-8 ml-1 mr-1 pl-1 pr-1 inline-flex items-center justify-center rounded hover:bg-slate-200';
             lineWidthBtn.addEventListener('click', () => {
-                const control = this._editor.page.selectControl.control;
+                const control = this._editor.page.selectRender.control;
                 this._editor.historyManager.startUndo(new LineWidthAction('undo line width', control));
                 control.lineWidth = i;
                 this._editor.historyManager.endUndo(new LineWidthAction('redo line width', control));
