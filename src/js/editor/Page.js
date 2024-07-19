@@ -12,8 +12,9 @@ export class Page {
         this._controls = [];
         this._newControl = null;
         this._selectControls = [];
-        this._selectControl = null;
-        this._hoverControl = null;
+        this._selectRender = null;
+        this._hoverRender = null;
+        this._copyControl = null;
 
         this.gridSize = 25;
         this.gridCount = 5;
@@ -43,20 +44,28 @@ export class Page {
         return this._selectControls;
     }
 
-    get selectControl() {
-        return this._selectControl;
+    get selectRender() {
+        return this._selectRender;
     }
 
-    set selectControl(value) {
-        this._selectControl = value;
+    set selectRender(value) {
+        this._selectRender = value;
     }
 
-    get hoverControl() {
-        return this._hoverControl;
+    get hoverRender() {
+        return this._hoverRender;
     }
 
-    set hoverControl(value) {
-        this._hoverControl = value;
+    set hoverRender(value) {
+        this._hoverRender = value;
+    }
+
+    get copyControl() {
+        return this._copyControl;
+    }
+
+    set copyControl(control) {
+        this._copyControl = control;
     }
 
     get painter() {
@@ -81,9 +90,9 @@ export class Page {
             return element !== control;
         });
 
-        if (control === this.selectControl?.control) {
-            this.selectControl = null;
-            this.hoverControl = null;
+        if (control === this.selectRender?.control) {
+            this.selectRender = null;
+            this.hoverRender = null;
         }
         this.render();
     }
@@ -94,8 +103,8 @@ export class Page {
         this._controls.forEach(control => {
             control.render(this.painter);
         });
-        this.hoverControl?.render(this.painter);
-        this.selectControl?.render(this.painter);
+        this.hoverRender?.render(this.painter);
+        this.selectRender?.render(this.painter);
     }
 
     captureRender() {

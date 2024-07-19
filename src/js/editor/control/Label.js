@@ -73,8 +73,8 @@ export class Label extends Rect {
 
     clone(control) {
         super.clone(control);
-        control.text = this.text;
-        control.fontSize = this.fontSize;
-        control.fontColor = this.fontColor;
+        this.text = control.text;
+        this.fontSize = control.fontSize;
+        this.fontColor = control.fontColor;
     }
 }

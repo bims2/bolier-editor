@@ -1,6 +1,5 @@
 import {Control, ControlType} from "./Control.js";
 import {PointPosition} from "./PointPosition.js";
-import {Point} from "./Point";
 
 export class Polygon extends Control {
     constructor() {
@@ -256,16 +255,7 @@ export class Polygon extends Control {
         return super.ptInSelectControl(p);
     }
 
-
     clone(control) {
         super.clone(control);
-        // this.points.forEach(p=> {
-        //     const p_ = new Point(p.position);
-        //     p_.x = p.x;
-        //     p_.y = p.y;
-        //     p_.xRatio = p.xRatio;
-        //     p_.yRatio = p.yRatio;
-        //     control.points.push(p_);
-        // });
     }
 }

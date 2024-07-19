@@ -12,9 +12,7 @@ export class ShortCutKeyEventHandler extends EventHandler {
 
         const tools = e.editor.tools;
         const key = e.originEvent.key;
-        if (e.originEvent.metaKey && key === 's') {
-            e.originEvent.preventDefault();
-            tools.capture();
+        if (!this.#metaKeyShortcut(e)) {
             return;
         }
 
@@ -53,6 +51,31 @@ export class ShortCutKeyEventHandler extends EventHandler {
                 console.log(e.originEvent.key);
                 break;
         }
+    }
+
+    #metaKeyShortcut(e) {
+        const tools = e.editor.tools;
+        if (!(e.originEvent.metaKey || e.originEvent.ctrlKey)) {
+            return true;
+        }
+
+        const key = e.originEvent.key;
+        switch (key) {
+            case 'c':
+                tools.copyControl();
+                break;
+            case 'v':
+                tools.pasteControl();
+                break;
+            case 's':
+                e.originEvent.preventDefault();
+                tools.capture();
+                break;
+            default:
+                return true;
+        }
+
+        return false;
     }
 
     onKeyUp(e) {

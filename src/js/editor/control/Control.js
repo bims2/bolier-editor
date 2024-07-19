@@ -71,6 +71,10 @@ export class Control {
         return this._opacity;
     }
 
+    set opacity(value) {
+        this._opacity = value;
+    }
+
     get select() {
         return this._select;
     }
@@ -193,14 +197,10 @@ export class Control {
     }
 
     clone(control) {
-        control.lineWidth = this.lineWidth;
-        control.lineColor = this.lineColor;
-        control.lineStyle = this.lineStyle;
-        control.fillColor = this.fillColor;
-        control.opacity = this.opacity;
-        control.minPoint.x = this.minPoint.x;
-        control.minPoint.y = this.minPoint.y;
-        control.maxPoint.x = this.maxPoint.x;
-        control.maxPoint.y = this.maxPoint.y;
+        this.lineWidth = control.lineWidth;
+        this.lineColor = control.lineColor;
+        this.lineStyle = control.lineStyle;
+        this.fillColor = control.fillColor;
+        this.opacity = control.opacity;
     }
 }

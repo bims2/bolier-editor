@@ -4,7 +4,7 @@ import {ResizeAction} from "../../command/undo/ResizeAction.js";
 export class MoveControlEventHandler extends EventHandler {
 
     onMouseMove(e) {
-        const control = e.editor.page.selectControl.control;
+        const control = e.editor.page.selectRender.control;
 
         const mx = e.point.x - e.downPoint.x;
         const my = e.point.y - e.downPoint.y;
@@ -26,6 +26,6 @@ export class MoveControlEventHandler extends EventHandler {
         if (xGap <= 1 &&  yGap <= 1) {
             return;
         }
-        e.editor.historyManager.endUndo(new ResizeAction('redo move', e.editor.page.selectControl.control));
+        e.editor.historyManager.endUndo(new ResizeAction('redo move', e.editor.page.selectRender.control));
     }
 }

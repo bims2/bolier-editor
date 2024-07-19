@@ -14,6 +14,7 @@ import {CreateLabel} from "./command/CreateLabel.js";
 import {EditLabel} from "./command/EditLabel.js";
 import {Action} from "./command/undo/Action.js";
 import {ToolbarUtil} from "./editor/ToolbarUtil.js";
+import {ControlCreator} from "./editor/control/ControlCreator.js";
 
 export class Tools {
     constructor(editor) {
@@ -58,13 +59,13 @@ export class Tools {
 
         this.editeLabel = ()=> {
             this.commandManager.execute(new EditLabel(this.editor));
-            this.editor.page.selectControl = null;
-            this.editor.page.hoverControl = null;
+            this.editor.page.selectRender = null;
+            this.editor.page.hoverRender = null;
             editor.render();
         }
 
         this.removeControl = ()=> {
-            const control = editor.page?.selectControl?.control;
+            const control = editor.page?.selectRender?.control;
             if (!control) {
                 return;
             }
@@ -75,6 +76,30 @@ export class Tools {
             editor.page.removeControl(control);
             historyManager.endUndo(new Action(`redo remove ${control.type} control`,
                 ()=> editor.page.removeControl(control)));
+        }
+
+        this.copyControl = ()=> {
+            const page = editor.page;
+            page.copyControl = editor.page?.selectRender?.control;
+            console.log('copy Control');
+        }
+
+        this.pasteControl = ()=> {
+            const control = editor.page?.copyControl;
+            if (!control) {
+                return;
+            }
+
+            const copyControl = ControlCreator.Create(control.type);
+            copyControl.clone(control);
+            copyControl.move({x:30, y:20});
+            copyControl.updateSelectPosition();
+            historyManager.startUndo(new Action(`undo paste ${control.type} control`,
+                ()=> editor.page.removeControl(copyControl)));
+            editor.page.addControl(copyControl);
+            historyManager.endUndo(new Action(`redo paste ${control.type} control`,
+                ()=> editor.page.addControl(copyControl)));
+            editor.page.copyControl = copyControl;
         }
 
         this.capture = ()=> {

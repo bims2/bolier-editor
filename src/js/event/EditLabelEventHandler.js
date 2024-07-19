@@ -4,7 +4,7 @@ import {TextUtil} from "../editor/text/TextUtil.js";
 export class EditLabelEventHandler extends EventHandler {
     constructor(editor) {
         super();
-        this._label = editor.page.selectControl.control;
+        this._label = editor.page.selectRender.control;
         this._label.text = '';
     }
 

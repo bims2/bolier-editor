@@ -58,4 +58,11 @@ export class Point {
         p.yRatio = this.yRatio;
         return p;
     }
+
+    clone(p) {
+        this.x = p.x;
+        this.y = p.y;
+        this.xRatio = p.xRatio;
+        this.yRatio = p.yRatio;
+    }
 }
