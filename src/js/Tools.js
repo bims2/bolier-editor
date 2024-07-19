@@ -81,7 +81,6 @@ export class Tools {
         this.copyControl = ()=> {
             const page = editor.page;
             page.copyControl = editor.page?.selectRender?.control;
-            console.log('copy Control');
         }
 
         this.pasteControl = ()=> {
