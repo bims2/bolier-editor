@@ -238,32 +238,20 @@ export class Page {
         const maxX = this.width;
         const oldOrgX = oldOrigin.x;
         if (minX < 0) {
-            console.log('min');
+            // console.log('min');
             let orgX = orgPoint.x + (minX * coordinate.dpr);
             let curX = (orgX-oldOrgX*dpr)/(1-dpr);
             orgX = curX - (curX - oldOrigin.x) * dpr
-            // const xGqp =  (-orgPoint.x / dpr - wayPoint.x) * dpr;
-            // orgX += xGqp;
-            // curX = curX = Math.round((orgX-oldOrgX*dpr)/(1-dpr));
-            // console.log(`(${orgX} - ${oldOrgX} * ${dpr}) / (1 - ${dpr})`);
-            console.log('curX', coordinate.curPoint.x, 'change curX', curX, 'dpr', dpr, 'orgPoint', orgPoint);
+            // console.log('curX', coordinate.curPoint.x, 'change curX', curX, 'dpr', dpr, 'orgPoint', orgPoint);
             coordinate.curPoint.x = curX;
             orgPoint.x = orgX;
         } else if (maxX < this.width/coordinate.dpr + minX) {
-            console.log('max');
+            // console.log('max');
             const xGap = (this.width/coordinate.dpr + minX) - maxX;
-            console.log(this.width/coordinate.dpr + minX, 'xGap', xGap);
+            // console.log(this.width/coordinate.dpr + minX, 'xGap', xGap);
             let orgX = orgPoint.x + xGap * coordinate.dpr;
             let curX = (orgX-oldOrgX*dpr)/(1-dpr);
             orgX = curX - (curX - oldOrigin.x) * dpr;
-
-            // orgPoint.x = orgX;
-            // minX = -orgPoint.x / coordinate.dpr - wayPoint.x;
-            // if (minX <= 0) {
-            //     orgX = orgPoint.x + (minX * coordinate.dpr);
-            //     curX = (orgX-oldOrgX*dpr)/(1-dpr);
-            //     orgX = curX - (curX - oldOrigin.x) * dpr;
-            // }
 
             coordinate.curPoint.x = curX;
             orgPoint.x = orgX;
@@ -279,27 +267,19 @@ export class Page {
             coordinate.curPoint.y = curY;
             orgPoint.y = orgY;
         } else if (maxY < this.height/coordinate.dpr + minY) {
-            console.log('max');
+            // console.log('max');
             const yGap = (this.height/coordinate.dpr + minY) - maxY;
-            console.log(this.height/coordinate.dpr + minY, 'yGap', yGap);
+            // console.log(this.height/coordinate.dpr + minY, 'yGap', yGap);
             let orgY = orgPoint.y + yGap * coordinate.dpr;
             let curY = (orgY-oldOrgY*dpr)/(1-dpr);
             orgY = curY - (curY - oldOrigin.y) * dpr;
-
-            // orgPoint.y = orgY;
-            // minY = -orgPoint.y / coordinate.dpr - wayPoint.y;
-            // if (minY <= 0) {
-            //     orgY = orgPoint.y + (minY * coordinate.dpr);
-            //     curY = (orgY-oldOrgY*dpr)/(1-dpr);
-            //     orgY = curY - (curY - oldOrigin.y) * dpr;
-            // }
 
             coordinate.curPoint.y = curY;
             orgPoint.y = orgY;
         }
 
         const curPoint = coordinate.curPoint;
-        console.log('sX', minX, 'sY', minY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint, 'curPoint', curPoint, 'dpr', coordinate.dpr);
+        // console.log('sX', minX, 'sY', minY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint, 'curPoint', curPoint, 'dpr', coordinate.dpr);
         // console.log('pageWidth dpr', this.width / coordinate.dpr, 'pageHeight dpr', this.height / coordinate.dpr);
 
         this.transform();

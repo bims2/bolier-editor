@@ -149,6 +149,14 @@ export class Editor {
         return this._historyManager;
     }
 
+    get width() {
+        return this.canvas.width;
+    }
+
+    get height() {
+        return this.canvas.height;
+    }
+
     get maxPosition() {
         const canvasRect = this.canvas.getBoundingClientRect();
         const maxX = canvasRect.right;
