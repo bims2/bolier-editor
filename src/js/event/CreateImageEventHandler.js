@@ -14,6 +14,8 @@ export class CreateImageEventHandler extends EventHandler {
         editor.historyManager.startUndo(new Action('undo create image', ()=> {
             editor.page.removeControl(this.image);
         }));
+
+        this._maxImage = false;
     }
 
     get type() {
@@ -25,6 +27,7 @@ export class CreateImageEventHandler extends EventHandler {
     }
 
     onMouseMove(e) {
+        this._maxImage = false;
         const image = this.image;
         if (!e.down) {
             image.setPosition(e.point);
@@ -45,7 +48,9 @@ export class CreateImageEventHandler extends EventHandler {
     }
 
     onMouseUp(e) {
-        ControlUtil.checkDragPosition(this.image, e.downPoint, e.point);
+        if (!this._maxImage) {
+            ControlUtil.checkDragPosition(this.image, e.downPoint, e.point);
+        }
         this.image.updatePosition();
         this.editor.removeForegroundRender();
         this.editor.clearCommand();
@@ -54,5 +59,28 @@ export class CreateImageEventHandler extends EventHandler {
         e.editor.historyManager.endUndo(new Action('redo create image', ()=> {
             this.editor.page.addControl(this.image);
         }));
+    }
+
+    onKeyDown(e) {
+        if (e.originEvent.key !== ' ') {
+            return;
+        }
+
+        this._maxImage = true;
+        const image = this.image;
+        const width = e.editor.width;
+        const height = e.editor.height;
+        image.lt.x = 0;
+        image.lt.y = 0;
+
+        image.rt.x = width;
+        image.rt.y = 0;
+
+        image.rb.x = width;
+        image.rb.y = height;
+
+        image.lb.x = 0;
+        image.lb.y = height;
+        e.editor.render();
     }
 }
