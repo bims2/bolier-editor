@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editor</title>
+    <link href="../src/css/style.css" rel="stylesheet">
+    <script type="module">
+        const urlPrams = new URLSearchParams(window.location.search);
+        const wRate = urlPrams.get('wRate');
+        const hRate = urlPrams.get('hRate');
+        const from = urlPrams.get('from');
+        console.log(wRate, hRate);
+        import {Editor} from "../src/js/editor/Editor.js"
+
+        globalThis.from = from;
+        globalThis.editor = new Editor('editor', {width: wRate, height: hRate});
+    </script>
+    <script>
+        function save() {
+            const parentWindow = window.opener;
+            parentWindow.postMessage({from: globalThis.from, base64: globalThis.editor.save()}, window.location.origin);
+            window.close();
+        }
+    </script>
+</head>
+<body>
+    <div id="editor"></div>
+    <div class="m-5">
+        <button class="px-4 py-2 font-semibold text-sm bg-white text-slate-700 border border-slate-300
+                    rounded-md shadow-sm dark:bg-slate-700
+                    dark:text-slate-200 dark:border-transparent"
+                onclick="save()">save</button>
+    </div>
+</body>
+</html>

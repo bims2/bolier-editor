@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bundle-test</title>
+    <link href="../src/css/style.css" rel="stylesheet">
+    <script type="text/javascript">
+        const DEFAULT_WIDTH = 750;
+        function openWindow(from, wRate, hRate) {
+            const params = new URLSearchParams({
+                from: from,
+                wRate: wRate,
+                hRate: hRate
+            }).toString();
+            const rate = DEFAULT_WIDTH / wRate;
+            const width = Math.max(DEFAULT_WIDTH, 370);
+            const height = Math.max((hRate * rate) + 90, 550);
+            console.log(`width=${width}, height=${height}`);
+            window.open('/graphical-editor/demo/editor.html?' + params, 'NewWindow', `width=${width}, height=${height}`);
+        }
+
+        window.addEventListener('message', (e)=> {
+            if (e.origin !== window.location.origin) {
+                return;
+            }
+            console.log('Received message from child:', e.data);
+            const id = e.data.from;
+            const base64 = e.data.base64;
+            const target = document.getElementById(id);
+
+            while (target.firstChild) {
+                target.removeChild(target.firstChild);
+            }
+
+            const imgTag = document.createElement('img');
+            imgTag.src = base64;
+            target.appendChild(imgTag);
+        });
+    </script>
+</head>
+<body>
+<div class="m-5">
+    <div class="border border-gray-300 w-full max-w-2xl mx-auto">
+        <div class="grid grid-cols-5 border-b border-gray-300">
+            <div class="col-span-2 p-2 font-bold border-r border-gray-300 text-center">사 진</div>
+            <div class="col-span-3 p-2 font-bold text-center">내 용</div>
+        </div>
+        <div class="grid grid-cols-5">
+            <div class="col-span-2 p-4 border-r border-gray-300">
+                <div >
+                    <div id="picture1" class="bg-gray-200 aspect-square" onclick="openWindow('picture1', 3, 3)"></div>
+                </div>
+                <p class="text-center text-gray-500 mt-2 text-sm">Select Layout</p>
+            </div>
+            <div class="col-span-3">
+                <div class="grid grid-rows-3 h-full">
+                    <div class="p-2 border-b border-gray-300">위치</div>
+                    <div class="p-2 border-b border-gray-300">현상</div>
+                    <div class="p-2">대책</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="m-5">
+    <div class="border border-gray-300 w-full max-w-2xl mx-auto">
+        <div class="grid grid-cols-1">
+            <div class="m-3">
+                <div id="picture2" class="min-h-72 bg-gray-200 w-full" onclick="openWindow('picture2', 2.22, 1)"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="m-5">
+    <div class="border border-gray-300 w-full max-w-2xl mx-auto">
+        <div class="grid grid-rows-12 border-b border-gray-300">
+            <div class="flex items-center row-span-1 p-2 font-bold border-b border-gray-300">
+                <div class="flex-1">
+                    <p class="text-center">사 진</p>
+                </div>
+            </div>
+            <div class="row-span-10 p-2 font-bold">
+                <div >
+                    <div id="picture3" class="bg-gray-200 aspect-square" onclick="openWindow('picture3', 3, 3)"></div>
+                </div>
+            </div>
+            <div class="row-span-1 p-2 font-bold">
+                <p class="text-center text-gray-500 mt-2 text-sm">Select Layout</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

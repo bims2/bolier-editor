@@ -14,8 +14,10 @@ export class Editor {
 
         this.canvas = document.createElement('canvas');
         this.canvas.style.border = 'solid 2px #000';
-        this.canvas.width = width * 500;
-        this.canvas.height = height * 500;
+        const DEFAULT_WIDTH = 700;
+        const rate = DEFAULT_WIDTH / width;
+        this.canvas.width = DEFAULT_WIDTH;
+        this.canvas.height = height * rate;
 
         this.ctx = this.canvas.getContext('2d');
         this.page = new Page(this.ctx);
