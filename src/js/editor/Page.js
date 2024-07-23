@@ -18,6 +18,8 @@ export class Page {
 
         this.gridSize = 25;
         this.gridCount = 5;
+
+        this._viewControlOrder = false;
     }
 
     get width() {
@@ -76,6 +78,14 @@ export class Page {
         this.ctx.canvas.style.cursor = cursor;
     }
 
+    get viewControlOrder() {
+        return this._viewControlOrder;
+    }
+
+    set viewControlOrder(value) {
+        this._viewControlOrder = value;
+    }
+
     get coordinate() {
         return this._coordinate;
     }
@@ -100,8 +110,12 @@ export class Page {
     render() {
         this.transform();
         this.renderBackground();
-        this._controls.forEach(control => {
+        this._controls.forEach((control, idx) => {
             control.render(this.painter);
+            if (!this.viewControlOrder) {
+                return;
+            }
+            this.painter.drawText(control.minPoint, idx); // 순서 체크하기 위한 임시코드
         });
         this.hoverRender?.render(this.painter);
         this.selectRender?.render(this.painter);

@@ -21,6 +21,10 @@ export class Painter {
         this.ctx.fillText(label.text, x, y);
     }
 
+    drawText(p, text, fontSize = 10, fontColor = 'black') {
+        this.ctx.fillText(text, p.x, p.y);
+    }
+
     drawLine(p1, p2, color = 'black', width = 1, opacity = 1, style = LineStyle.SOLID) {
         this.start();
         this.lineOption(color, width, opacity, style);
