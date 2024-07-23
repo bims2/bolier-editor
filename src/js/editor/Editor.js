@@ -5,6 +5,7 @@ import {ToolbarUtil} from "./ToolbarUtil.js";
 import {HistoryManager} from "./HistoryManager.js";
 import {TextEditor} from "./text/TextEditor.js";
 import {Toolbar} from "./Toolbar.js";
+
 // import "../../css/style.css"
 
 export class Editor {
