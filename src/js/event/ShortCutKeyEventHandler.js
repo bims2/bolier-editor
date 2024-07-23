@@ -47,6 +47,12 @@ export class ShortCutKeyEventHandler extends EventHandler {
             case 'Backspace':
                 tools.removeControl();
                 break;
+            case '[':
+                tools.frontControl();
+                break;
+            case ']':
+                tools.backControl();
+                break;
             default:
                 console.log(e.originEvent.key);
                 break;
@@ -70,6 +76,16 @@ export class ShortCutKeyEventHandler extends EventHandler {
             case 's':
                 e.originEvent.preventDefault();
                 tools.capture();
+                break;
+            case '[':
+                tools.veryFrontControl();
+                break;
+            case ']':
+                tools.veryBackControl();
+                break;
+            case '5':
+                e.editor.page.viewControlOrder = !e.editor.page.viewControlOrder;
+                e.editor.render();
                 break;
             default:
                 return true;

@@ -49,12 +49,10 @@ export class SelectEventHandler extends EventHandler {
 
         let render = null;
         const controls = page.controls;
-        for (const control of controls) {
+        controls.slice().reverse().some(control=> {
             render = control.ptInSelectControl(e.point);
-            if (render !== null) {
-                break;
-            }
-        }
+            return render !== null;
+        });
 
         page.selectRender = render;
         if (render === null) {
@@ -78,12 +76,10 @@ export class SelectEventHandler extends EventHandler {
 
         let render = null;
         const controls = page.controls;
-        for (const control of controls) {
+        controls.slice().reverse().some(control=> {
             render = control.ptInHoverControl(e.point);
-            if (render !== null) {
-                break;
-            }
-        }
+            return render !== null;
+        });
 
         if (page.selectRender !== null) {
             const selControl = page.selectRender.control;
