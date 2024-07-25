@@ -41,6 +41,13 @@ export class SelectEventHandler extends EventHandler {
     onMouseDown(e) {
         const page = e.editor.page;
 
+        if ((e.originEvent.button === 2) || (e.originEvent.which === 3)) {
+            e.down = false;
+            e.editor.menu.show(e.clientPoint);
+            return;
+        }
+        e.editor.menu.hide();
+
         if (page.selectRender !== null && page.selectRender.resizeType !== PointPosition.NONE) {
             e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectRender.control));
             e.editor.startDragHandler(new ResizeControlEventHandler());

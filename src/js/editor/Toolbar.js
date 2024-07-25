@@ -7,6 +7,7 @@ import {LineWidthAction} from "../command/undo/LineWidthAction.js";
 import {FontColorAction} from "../command/undo/FontColorAction.js";
 import {TextUtil} from "./text/TextUtil.js";
 import {SvgIcon} from "../../icon/SvgIcon.js";
+import {ShortCurKeyType} from "./ShortCutKeyManager.js";
 
 const COMMON_TOOLBAR_STYLE =
     'hidden pointer-events-auto flex items-center rounded-md border border-slate-300 ' +
@@ -25,22 +26,30 @@ export class Toolbar {
         toolbar.className =
             'pointer-events-auto flex items-center rounded-md border border-slate-200 ' +
             'shadow-sm bg-background text-foreground relative gap-0.5 p-0.5 p-1 pl-3 pr-1';
-        const lineBtn = this.#createSvgButton(SvgIcon.makeLineIconConfig(), 'Q', () => {
+
+        const shortCutKeyManager = this._editor.shortCutKeyManager;
+        const lineBtn = this.#createSvgButton(SvgIcon.makeLineIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_LINE), () => {
             this._tools.createLine();
         });
-        const rectBtn = this.#createSvgButton(SvgIcon.makeRectIconConfig(), 'W', () => {
+        const rectBtn = this.#createSvgButton(SvgIcon.makeRectIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_RECT), () => {
             this._tools.createRect();
         });
-        const triangleBtn = this.#createSvgButton(SvgIcon.makeTriangleIconConfig(), 'E', () => {
+        const triangleBtn = this.#createSvgButton(SvgIcon.makeTriangleIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_TRIANGLE), () => {
             this._tools.createTriangle();
         });
-        const circleBtn = this.#createSvgButton(SvgIcon.makeCircleIconConfig(), 'R', () => {
+        const circleBtn = this.#createSvgButton(SvgIcon.makeCircleIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_CIRCLE), () => {
             this._tools.createCircle();
         });
-        const imageBtn = this.#createSvgButton(SvgIcon.makeImageIconConfig(), 'T', () => {
+        const imageBtn = this.#createSvgButton(SvgIcon.makeImageIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_IMAGE), () => {
             this._tools.createImage();
         });
-        const labelBtn = this.#createSvgButton(SvgIcon.makeLabelIconConfig(), 'A', ()=> {
+        const labelBtn = this.#createSvgButton(SvgIcon.makeLabelIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.CREATE_LABEL), ()=> {
            this._tools.createLabel();
         });
         toolbar.appendChild(lineBtn);
@@ -55,10 +64,12 @@ export class Toolbar {
         separator.role = 'none';
         toolbar.appendChild(separator);
 
-        const undoBtn = this.#createSvgButton(SvgIcon.makeUndoIconConfig(), 'Z', ()=> {
+        const undoBtn = this.#createSvgButton(SvgIcon.makeUndoIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.UNDO), ()=> {
             this._tools.undo();
         });
-        const redoBtn = this.#createSvgButton(SvgIcon.makeRedoIconConfig(), 'Y', ()=> {
+        const redoBtn = this.#createSvgButton(SvgIcon.makeRedoIconConfig(),
+            shortCutKeyManager.getKeyString(ShortCurKeyType.REDO), ()=> {
             this._tools.redo();
         });
         toolbar.appendChild(undoBtn);
