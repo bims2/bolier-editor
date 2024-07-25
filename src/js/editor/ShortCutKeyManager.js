@@ -46,12 +46,12 @@ export class ShortCutKeyManager {
     }
 
     #initMacKeyMap(keyMap) {
-        keyMap.set(ShortCurKeyType.UNDO, '⌘Z');
-        keyMap.set(ShortCurKeyType.REDO, '⌘Y');
-        keyMap.set(ShortCurKeyType.COPY, '⌘C');
-        keyMap.set(ShortCurKeyType.PASTE, '⌘V');
-        keyMap.set(ShortCurKeyType.VERY_FRONT_CONTROL, '⌘[');
-        keyMap.set(ShortCurKeyType.VERY_BACK_CONTROL, '⌘]');
+        keyMap.set(ShortCurKeyType.UNDO, '⌘+Z');
+        keyMap.set(ShortCurKeyType.REDO, '⌘+Y');
+        keyMap.set(ShortCurKeyType.COPY, '⌘+C');
+        keyMap.set(ShortCurKeyType.PASTE, '⌘+V');
+        keyMap.set(ShortCurKeyType.VERY_FRONT_CONTROL, '⌘+[');
+        keyMap.set(ShortCurKeyType.VERY_BACK_CONTROL, '⌘+]');
     }
 
     #initOtherKeyMap(keyMap) {

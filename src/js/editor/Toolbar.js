@@ -59,10 +59,7 @@ export class Toolbar {
         toolbar.appendChild(imageBtn);
         toolbar.appendChild(labelBtn);
 
-        const separator = document.createElement('div');
-        separator.className = 'shrink-0 bg-border h-full w-[1px] mr-2 dark:bg-gray-300';
-        separator.role = 'none';
-        toolbar.appendChild(separator);
+        toolbar.appendChild(this.#createSeparate());
 
         const undoBtn = this.#createSvgButton(SvgIcon.makeUndoIconConfig(),
             shortCutKeyManager.getKeyString(ShortCurKeyType.UNDO), ()=> {
@@ -310,10 +307,18 @@ export class Toolbar {
             svg.classList.add('mr-2');
 
             const shortcutTxt = document.createElement('div');
-            shortcutTxt.className = 'w-2 h-3 items-center justify-center absolute right-0 bottom-0 text-[8px] opacity-40';
+            shortcutTxt.className = 'w-2 h-3 items-center justify-center absolute bottom-0 text-[8px] opacity-40';
+            if (shortCutKey.length > 2) {
+                shortcutTxt.classList.add('left-3');
+                // shortcutTxt.classList.add('lp-2');
+            } else {
+                shortcutTxt.classList.add('right-0');
+            }
             shortcutTxt.textContent = shortCutKey;
             btnWrap.appendChild(shortcutTxt);
         }
+
+
 
         return btnWrap;
     }
@@ -339,5 +344,12 @@ export class Toolbar {
 
         svg.appendChild(g);
         return svg;
+    }
+
+    #createSeparate() {
+        const separator = document.createElement('div');
+        separator.className = 'shrink-0 bg-border h-full w-[1px] mr-2 dark:bg-gray-300';
+        separator.role = 'none';
+        return separator;
     }
 }
