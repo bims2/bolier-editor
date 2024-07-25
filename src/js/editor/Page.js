@@ -90,8 +90,12 @@ export class Page {
         return this._coordinate;
     }
 
-    addControl(control) {
-        this.controls.push(control);
+    addControl(control, idx) {
+        if (idx) {
+            this.controls.splice(idx, 0, control);
+        } else {
+            this.controls.push(control);
+        }
         this.render();
     }
 

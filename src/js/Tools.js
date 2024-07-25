@@ -70,9 +70,11 @@ export class Tools {
                 return;
             }
 
+            const idx = editor.page.controls.indexOf(control);
+
             ToolbarUtil.getInstance().clear();
             historyManager.startUndo(new Action(`undo remove ${control.type} control`,
-                ()=> editor.page.addControl(control)));
+                ()=> editor.page.addControl(control, idx)));
             editor.page.removeControl(control);
             historyManager.endUndo(new Action(`redo remove ${control.type} control`,
                 ()=> editor.page.removeControl(control)));
