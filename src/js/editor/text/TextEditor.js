@@ -4,7 +4,7 @@ export class TextEditor {
     constructor(editor) {
         this.#init();
         this._editor = editor;
-        //TODO: 정리해야할 코드
+        //FIXME: 정리해야할 코드
         this._coordinate = editor.page.coordinate;
         TextUtil.setEditor(editor);
     }

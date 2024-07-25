@@ -5,6 +5,8 @@ import {ToolbarUtil} from "./ToolbarUtil.js";
 import {HistoryManager} from "./HistoryManager.js";
 import {TextEditor} from "./text/TextEditor.js";
 import {Toolbar} from "./Toolbar.js";
+import {Menu} from "./menu/Menu.js";
+import {ShortCutKeyManager} from "./ShortCutKeyManager.js";
 
 // import "../../css/style.css"
 
@@ -24,10 +26,12 @@ export class Editor {
         this.page = new Page(this.ctx);
         this.eventManager = new EventManager(this);
         this._historyManager = new HistoryManager(this);
+        this._shortCutKeyManager = new ShortCutKeyManager();
         this._tools = new Tools(this);
         this._toolbar = new Toolbar(this);
 
         this._textEditor = new TextEditor(this);
+        this._menu = new Menu(this);
 
         this.foregroundRender = null;
         this._enabledShortcut = true;
@@ -59,6 +63,10 @@ export class Editor {
 
         this.canvas.addEventListener('wheel', (e) => {
             this.eventManager.onMouseWheel(e);
+        });
+
+        this.canvas.addEventListener('contextmenu', (e)=> {
+            e.preventDefault();
         });
 
         document.addEventListener('keydown', (e) => {
@@ -146,8 +154,16 @@ export class Editor {
         return this._textEditor;
     }
 
+    get menu() {
+        return this._menu;
+    }
+
     get historyManager() {
         return this._historyManager;
+    }
+
+    get shortCutKeyManager() {
+        return this._shortCutKeyManager;
     }
 
     get width() {
