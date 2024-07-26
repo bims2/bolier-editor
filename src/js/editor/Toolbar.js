@@ -315,6 +315,8 @@ export class Toolbar {
                 shortcutTxt.classList.add('right-0');
             }
             shortcutTxt.textContent = shortCutKey;
+            shortcutTxt.style.userSelect = 'none';
+
             btnWrap.appendChild(shortcutTxt);
         }
 
