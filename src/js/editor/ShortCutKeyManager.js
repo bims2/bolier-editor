@@ -55,11 +55,11 @@ export class ShortCutKeyManager {
     }
 
     #initOtherKeyMap(keyMap) {
-        keyMap.set(ShortCurKeyType.UNDO, 'Alt+Z');
-        keyMap.set(ShortCurKeyType.REDO, 'Alt+Y');
-        keyMap.set(ShortCurKeyType.COPY, 'Alt+C');
-        keyMap.set(ShortCurKeyType.PASTE, 'Alt+V');
-        keyMap.set(ShortCurKeyType.VERY_FRONT_CONTROL, 'Alt+[');
-        keyMap.set(ShortCurKeyType.VERY_BACK_CONTROL, 'Alt+]');
+        keyMap.set(ShortCurKeyType.UNDO, 'Ctrl+Z');
+        keyMap.set(ShortCurKeyType.REDO, 'Ctrl+Y');
+        keyMap.set(ShortCurKeyType.COPY, 'Ctrl+C');
+        keyMap.set(ShortCurKeyType.PASTE, 'Ctrl+V');
+        keyMap.set(ShortCurKeyType.VERY_FRONT_CONTROL, 'Ctrl+[');
+        keyMap.set(ShortCurKeyType.VERY_BACK_CONTROL, 'Ctrl+]');
     }
 }
