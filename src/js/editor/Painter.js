@@ -14,11 +14,14 @@ export class Painter {
         // const height = 15;
         const x = label.minPoint.x;
         const y = label.maxPoint.y;
+
+        this.start();
         this.ctx.font = `${label.fontSize}px Arial`;
         this.ctx.fillStyle = label.fontColor;
         // this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'bottom';
         this.ctx.fillText(label.text, x, y);
+        this.end();
     }
 
     drawText(p, text, fontSize = 10, fontColor = 'black') {
