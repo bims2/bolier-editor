@@ -3,7 +3,7 @@ export class Coordinate {
         this._curPoint = {x: 0, y: 0};
         this._orgPoint = {x: 0, y: 0};
         this._wayPoint = {x: 0, y: 0};
-        this._dpr = window.devicePixelRatio;
+        this._dpr = 1;
     }
 
     get curPoint() {
