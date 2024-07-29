@@ -84,8 +84,10 @@ export class ShortCutKeyEventHandler extends EventHandler {
                 tools.veryBackControl();
                 break;
             case '5':
-                e.editor.page.viewControlOrder = !e.editor.page.viewControlOrder;
-                e.editor.render();
+                tools.toggleViewControlOrder();
+                break;
+            case '6':
+                tools.toggleViewOutLine();
                 break;
             default:
                 return true;

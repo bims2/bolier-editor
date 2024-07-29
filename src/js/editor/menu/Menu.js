@@ -15,7 +15,7 @@ export class Menu {
 
         this._root = document.createElement('div');
         this._root.id = 'menu-root';
-        this._root.className = 'hidden opacity-0 absolute';
+        this._root.className = 'hidden absolute';
         const menu = document.createElement('div');
         menu.id = 'menu';
         menu.className = 'overflow-hidden rounded-xl border p-1.5 bg-slate-50 w-40 drop-shadow-md';
@@ -116,14 +116,14 @@ export class Menu {
 
         this._root.classList.remove('hidden');
         // this._root.classList.add('duration-300');
-        this._root.classList.add('opacity-100');
-        this._root.classList.remove('opacity-0');
+        // this._root.classList.add('opacity-100');
+        // this._root.classList.remove('opacity-0');
     }
 
     hide() {
         // this._root.classList.add('duration-300');
-        this._root.classList.remove('opacity-100');
-        this._root.classList.add('opacity-0');
+        // this._root.classList.remove('opacity-100');
+        // this._root.classList.add('opacity-0');
         this._root.classList.add('hidden');
     }
 }

@@ -223,6 +223,16 @@ export class Tools {
             historyManager.redo();
         }
 
+        this.toggleViewControlOrder = ()=> {
+            editor.page.viewControlOrder = !editor.page.viewControlOrder;
+            editor.render();
+        }
+
+        this.toggleViewOutLine = ()=> {
+            editor.page.viewOutLine = !editor.page.viewOutLine;
+            editor.render();
+        }
+
         this.clear = () => {
             editor.removeForegroundRender();
             this.commandManager.execute(new DefaultCommand(editor));

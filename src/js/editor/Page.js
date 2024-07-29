@@ -20,6 +20,7 @@ export class Page {
         this.gridCount = 5;
 
         this._viewControlOrder = false;
+        this._viewOutLine = false;
     }
 
     get width() {
@@ -86,6 +87,14 @@ export class Page {
         this._viewControlOrder = value;
     }
 
+    get viewOutLine() {
+        return this._viewOutLine;
+    }
+
+    set viewOutLine(value) {
+        this._viewOutLine = value;
+    }
+
     get coordinate() {
         return this._coordinate;
     }
@@ -119,7 +128,7 @@ export class Page {
             if (!this.viewControlOrder) {
                 return;
             }
-            this.painter.drawText(control.minPoint, idx); // 순서 체크하기 위한 임시코드
+            this.painter.drawText(control.minPoint, idx); // 순서 체크용 코드
         });
         this.hoverRender?.render(this.painter);
         this.selectRender?.render(this.painter);
@@ -153,12 +162,15 @@ export class Page {
         // console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
 
-        const orgWidth = this.ctx.canvas.width;
-        const orgHeight = this.ctx.canvas.height;
-        this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'blue', 3, 1);
-        this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'blue', 3, 1);
-        this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'blue', 3, 1);
-        this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'blue', 3, 1);
+        //100% 화면 영역표시
+        if (this._viewOutLine) {
+            const orgWidth = this.ctx.canvas.width;
+            const orgHeight = this.ctx.canvas.height;
+            this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'blue', 3, 1);
+            this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'blue', 3, 1);
+            this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'blue', 3, 1);
+            this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'blue', 3, 1);
+        }
 
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
