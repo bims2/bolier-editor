@@ -22,9 +22,6 @@ export class TextUtil {
 
     static calculatorFontWidthHeight(text, fontSize, fontFamily) {
         const ctx = this._editor.ctx;
-        ctx.save();
-        ctx.fontSize = `${fontSize} Arial`;
-        ctx.restore();
 
         const span = document.createElement('span');
         span.style.visibility = 'hidden';
@@ -34,7 +31,7 @@ export class TextUtil {
         span.textContent = text;
 
         ctx.save();
-        ctx.font = `${fontSize} Arial`;
+        ctx.font = `${fontSize}px Arial`;
         const textWidth = ctx.measureText(text).width;
         ctx.restore();
 

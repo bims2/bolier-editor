@@ -10,8 +10,6 @@ export class Painter {
     }
 
     drawLabel(label) {
-        // const width = this.ctx.measureText(text).width;
-        // const height = 15;
         const x = label.minPoint.x;
         const y = label.maxPoint.y;
 
@@ -25,7 +23,11 @@ export class Painter {
     }
 
     drawText(p, text, fontSize = 10, fontColor = 'black') {
+        this.start();
+        this.ctx.font = `${fontSize}px Arial`;
+        this.ctx.fillStyle = fontColor;
         this.ctx.fillText(text, p.x, p.y);
+        this.end();
     }
 
     drawLine(p1, p2, color = 'black', width = 1, opacity = 1, style = LineStyle.SOLID) {
