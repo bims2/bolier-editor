@@ -109,13 +109,14 @@ export class Tools {
                 return;
             }
 
+            const controls = editor.page.controls;
             let idx = this.#findIndex(control);
-            if (idx <= 0) {
+            if (idx === -1 || idx === controls.length-1) {
                 return;
             }
 
             const change = ()=> {
-                this.#changeControlIdx(idx-1, idx);
+                this.#changeControlIdx(idx, idx+1);
                 editor.render();
             }
 
@@ -127,6 +128,59 @@ export class Tools {
         }
 
         this.veryFrontControl = ()=> {
+            const control = editor.page?.selectRender?.control;
+            if (!control) {
+                return;
+            }
+
+            const controls = editor.page.controls;
+            let idx = this.#findIndex(control);
+            if (idx === -1 || idx === controls.length-1) {
+                return;
+            }
+
+            const undo = ()=> {
+                const [control] = controls.splice(controls.length-1, 1);
+                controls.splice(idx, 0, control);
+            }
+
+            const redo = ()=> {
+                const [control] = controls.splice(idx, 1);
+                editor.page.addControl(control);
+                editor.render();
+            }
+
+            historyManager.startUndo(new Action(`undo very front ${control.type} control`,
+                ()=> undo()));
+            redo();
+            historyManager.endUndo(new Action(`redo very front ${control.type} control`,
+                ()=> redo()));
+        }
+
+        this.backControl = ()=> {
+            const control = editor.page?.selectRender?.control;
+            if (!control) {
+                return;
+            }
+
+            let idx = this.#findIndex(control);
+            if (idx <= 0) {
+                return;
+            }
+
+            const change = ()=> {
+                this.#changeControlIdx(idx-1, idx);
+                editor.render();
+            }
+
+            historyManager.startUndo(new Action(`undo back ${control.type} control`,
+                ()=> change()));
+            change();
+            historyManager.endUndo(new Action(`redo back ${control.type} control`,
+                ()=> change()));
+        }
+
+        this.veryBackControl = ()=> {
             const control = editor.page?.selectRender?.control;
             if (!control) {
                 return;
@@ -147,60 +201,6 @@ export class Tools {
             const redo = ()=> {
                 const [control] = controls.splice(idx, 1);
                 controls.splice(0, 0, control);
-                editor.render();
-            }
-
-            historyManager.startUndo(new Action(`undo very front ${control.type} control`,
-                ()=> undo()));
-            redo();
-            historyManager.endUndo(new Action(`redo very front ${control.type} control`,
-                ()=> redo()));
-        }
-
-        this.backControl = ()=> {
-            const control = editor.page?.selectRender?.control;
-            if (!control) {
-                return;
-            }
-
-            const controls = editor.page.controls;
-            let idx = this.#findIndex(control);
-            if (idx === -1 || idx === controls.length-1) {
-                return;
-            }
-
-            const change = ()=> {
-                this.#changeControlIdx(idx, idx+1);
-                editor.render();
-            }
-
-            historyManager.startUndo(new Action(`undo back ${control.type} control`,
-                ()=> change()));
-            change();
-            historyManager.endUndo(new Action(`redo back ${control.type} control`,
-                ()=> change()));
-        }
-
-        this.veryBackControl = ()=> {
-            const control = editor.page?.selectRender?.control;
-            if (!control) {
-                return;
-            }
-
-            const controls = editor.page.controls;
-            let idx = this.#findIndex(control);
-            if (idx === -1 || idx === controls.length-1) {
-                return;
-            }
-
-            const undo = ()=> {
-                const [control] = controls.splice(controls.length-1, 1);
-                controls.splice(idx, 0, control);
-            }
-
-            const redo = ()=> {
-                const [control] = controls.splice(idx, 1);
-                editor.page.addControl(control);
                 editor.render();
             }
 
