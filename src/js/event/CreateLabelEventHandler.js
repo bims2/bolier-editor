@@ -6,15 +6,15 @@ import {CursorType} from "../editor/CursorType.js";
 export class CreateLabelEventHandler extends EventHandler {
     constructor(editor) {
         super();
-        this.label = editor.page.newControl;
+        this._label = editor.page.newControl;
         this.textEditor = editor.textEditor
-        this.textEditor.updateLabel(this.label);
+        this.textEditor.updateLabel(this._label);
         editor.enabledShortcut = false;
         this.isDown = false;
 
         editor.page.setCursor(CursorType.TEXT);
         editor.historyManager.startUndo(new Action('undo create label', ()=> {
-            editor.page.removeControl(this.label);
+            editor.page.removeControl(this._label);
         }));
     }
 
@@ -25,38 +25,39 @@ export class CreateLabelEventHandler extends EventHandler {
     onMouseDown(e) {
         if (this.isDown) {
             e.editor.clearCommand();
+            this._label.isEdit = false;
             if (this.textEditor.val === '') {
                 this.textEditor.hide();
                 return;
             }
-            this.label.text = this.textEditor.val + '';
+            this._label.text = this.textEditor.val + '';
 
-            const x = this.label.lt.x;
-            const y = this.label.lt.y;
+            const x = this._label.lt.x;
+            const y = this._label.lt.y;
             const inputSize = this.textEditor.getSize();
             const x1 = x + inputSize.width + 5;
             const y1 = y + inputSize.height;
 
-            this.label.rt.x = x1;
-            this.label.rt.y = y;
-            this.label.lb.x = x;
-            this.label.lb.y = y1;
-            this.label.rb.x = x1;
-            this.label.rb.y = y1;
+            this._label.rt.x = x1;
+            this._label.rt.y = y;
+            this._label.lb.x = x;
+            this._label.lb.y = y1;
+            this._label.rb.x = x1;
+            this._label.rb.y = y1;
 
-            this.label.updatePosition();
-            e.editor.page.addControl(this.label);
+            this._label.updatePosition();
+            e.editor.page.addControl(this._label);
             this.textEditor.hide();
 
             e.editor.historyManager.endUndo(new Action('redo create label', ()=> {
-                e.editor.page.addControl(this.label);
+                e.editor.page.addControl(this._label);
             }));
             return;
         }
         this.isDown = true;
 
-        this.label.lt.x = e.point.x;
-        this.label.lt.y = e.point.y;
+        this._label.lt.x = e.point.x;
+        this._label.lt.y = e.point.y;
         e.originEvent.preventDefault();
         this.textEditor.show(e.clientPoint);
         this.textEditor.focus();

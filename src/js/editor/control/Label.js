@@ -9,6 +9,7 @@ export class Label extends Rect {
         this._text = '';
         this._fontSize = 20;
         this._fontColor = 'rgb(0, 0, 0)';
+        this._isEdit = false;
     }
 
     get type() {
@@ -39,6 +40,14 @@ export class Label extends Rect {
         this._fontColor = value;
     }
 
+    get isEdit() {
+        return this._isEdit;
+    }
+
+    set isEdit(value) {
+        this._isEdit = value;
+    }
+
     resize(resizeType, p) {
         super.resize(resizeType, p);
 
@@ -66,7 +75,10 @@ export class Label extends Rect {
     }
 
     render(painter) {
-        // super.render(painter);
+        if (this.isEdit) {
+            return;
+        }
+        super.render(painter);
         painter.drawLabel(this);
     }
 

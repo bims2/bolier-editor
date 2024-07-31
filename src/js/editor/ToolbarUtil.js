@@ -23,32 +23,24 @@ export class ToolbarUtil {
             this.fillColorToolbar = document.getElementById('fill-color');
             this.fillColorBtn = document.getElementById('fill-color-btn');
 
-            this.fontOptionToolbar = document.getElementById('font-option');
             this.fontColorToolbar = document.getElementById('font-color');
             this.fontSize = document.getElementById('font-size');
+            this.fontSizeWrap = document.getElementById('font-size-wrap');
+            this.fontColorBtn = document.getElementById('font-color-btn');
         }
         return this.instance;
     }
 
-    static showFontOptionToolbar(p, control) {
-        this.fontOptionToolbar.classList.remove('hidden');
-        this.fontOptionToolbar.style.top = p.y + 'px';
-        this.fontOptionToolbar.style.left = p.x + 'px';
-        this.fontSize.value = Math.round(control.fontSize);
-        this.#checkTagXPosition(this.fontOptionToolbar, p.x);
-    }
-
-    static hideFontOptionToolbar() {
-        this.fontOptionToolbar.classList.add('hidden');
-        this.fontColorToolbar.classList.add('hidden');
-    }
-
     static showControlOptionToolbar(e, control) {
         const p = e.originPoint;
+
         if (control.type === ControlType.LABEL) {
-            this.clear();
-            this.showFontOptionToolbar(p, control);
-            return;
+            this.fontSizeWrap.classList.remove('hidden');
+            this.fontColorBtn.classList.remove('hidden');
+            this.fontSize.value = Math.round(control.fontSize);
+        } else {
+            this.fontSizeWrap.classList.add('hidden');
+            this.fontColorBtn.classList.add('hidden');
         }
 
         this.controlOptionToolbar.classList.remove('hidden');
@@ -69,12 +61,12 @@ export class ToolbarUtil {
     }
 
     static hideControlOptionToolbar() {
-        this.hideFontOptionToolbar();
         this.controlOptionToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
     }
 
     static showLineWidthToolbar() {
@@ -82,6 +74,7 @@ export class ToolbarUtil {
         this.lineStyleToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
         this.#checkTagXPosition(this.lineWidthToolbar, ToolbarPosition.LINE_WIDTH_LEFT);
     }
 
@@ -90,6 +83,7 @@ export class ToolbarUtil {
         this.lineWidthToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
     }
 
     static showLineColorToolbar() {
@@ -97,6 +91,7 @@ export class ToolbarUtil {
         this.lineStyleToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
         this.#checkTagXPosition(this.lineColorToolbar, ToolbarPosition.LINE_COLOR_LEFT);
     }
 
@@ -105,11 +100,16 @@ export class ToolbarUtil {
         this.lineColorToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
+        this.fontColorToolbar.classList.add('hidden');
         this.#checkTagXPosition(this.fillColorToolbar, ToolbarPosition.FILL_COLOR_LEFT);
     }
 
     static showFontColorToolbar() {
         this.fontColorToolbar.classList.remove('hidden');
+        this.fillColorToolbar.classList.add('hidden');
+        this.lineColorToolbar.classList.add('hidden');
+        this.lineStyleToolbar.classList.add('hidden');
+        this.lineWidthToolbar.classList.add('hidden');
         this.#checkTagXPosition(this.fontColorToolbar, ToolbarPosition.FONT_COLOR_LEFT);
     }
 
@@ -137,6 +137,5 @@ export class ToolbarUtil {
 
     static clear() {
         this.hideControlOptionToolbar();
-        this.hideFontOptionToolbar();
     }
 }

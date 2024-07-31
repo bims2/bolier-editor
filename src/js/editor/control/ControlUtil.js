@@ -10,7 +10,7 @@ export class ControlUtil {
 
     static generateResizeRect(p) {
         const rect = new SelectionRect();
-        rect.updatePosition({x: p.x-2, y: p.y-2}, {x: p.x+2, y: p.y+2});
+        rect.updatePosition({x: p.x-3, y: p.y-3}, {x: p.x+3, y: p.y+3});
         return rect;
     }
 

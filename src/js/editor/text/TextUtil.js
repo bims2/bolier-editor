@@ -9,7 +9,7 @@ export class TextUtil {
     static calculatorFontSize(text, maxWidth, initialFontSize) {
         const ctx = this._editor.ctx;
         ctx.save();
-        ctx.font = `${initialFontSize} Arial`;
+        ctx.font = `${initialFontSize}px Arial`;
         const textWidth = ctx.measureText(text).width ?? 0.1;
         ctx.restore();
         let scalingFactor = maxWidth / textWidth;
@@ -30,11 +30,6 @@ export class TextUtil {
         // span.style.fontFamily = fontFamily;
         span.textContent = text;
 
-        ctx.save();
-        ctx.font = `${fontSize}px Arial`;
-        const textWidth = ctx.measureText(text).width;
-        ctx.restore();
-
         document.body.appendChild(span);
         const width = span.offsetWidth;
         const height = span.offsetHeight;
@@ -43,7 +38,8 @@ export class TextUtil {
         return {width: width, height: height};
     }
 
-    static getWhiteSpace() {
-        return this._editor.page.coordinate.dpr * 16;
+    static getWhiteSpace(fontSize) {
+        const dpr = this._editor.page.coordinate.dpr;
+        return dpr * (fontSize * dpr * 1.2);
     }
 }

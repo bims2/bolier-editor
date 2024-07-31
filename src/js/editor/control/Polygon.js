@@ -220,7 +220,9 @@ export class Polygon extends Control {
             ctx.lineTo(p.x, p.y);
         }
         const st = points[0];
+        const sd = points[1];
         ctx.lineTo(st.x, st.y);
+        ctx.lineTo(sd.x, sd.y);
 
         painter.lineEnd();
 

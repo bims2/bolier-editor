@@ -13,11 +13,13 @@ export class Painter {
         const x = label.minPoint.x;
         const y = label.maxPoint.y;
 
+        this.ctx.save();
         this.ctx.font = `${label.fontSize}px Arial`;
         this.ctx.fillStyle = label.fontColor;
         // this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'bottom';
         this.ctx.fillText(label.text, x, y);
+        this.ctx.restore();
     }
 
     drawText(p, text, fontSize = 10, fontColor = 'black') {
@@ -81,6 +83,7 @@ export class Painter {
         ctx.lineTo(rb.x, rb.y);
         ctx.lineTo(lb.x, lb.y);
         ctx.lineTo(lt.x, lt.y);
+        ctx.lineTo(rt.x, rt.y);
         this.lineEnd();
     }
 

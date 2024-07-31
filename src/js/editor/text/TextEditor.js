@@ -11,6 +11,7 @@ export class TextEditor {
 
     updateLabel(label) {
         this._label = label;
+        this._label.isEdit = true;
         this._input.value = label.text;
         // this._input.style.fontSize = label.fontSize + 'px';
         // this._input.fontFamily = 'sans-serif';
@@ -39,7 +40,7 @@ export class TextEditor {
     #resizeInput() {
         const inputRect = this._input.getBoundingClientRect();
 
-        let width = this.getSize(this._coordinate.dpr).width + TextUtil.getWhiteSpace();
+        let width = this.getSize(this._coordinate.dpr).width + TextUtil.getWhiteSpace(this._label.fontSize);
         let right = inputRect.x + width;
         const maxPosition = this._editor.maxPosition;
         const xGap = right - maxPosition.x;
@@ -77,11 +78,22 @@ export class TextEditor {
         input.style.top = (minY + window.scrollY) + 'px';
         input.style.left = (minX + window.scrollX) + 'px';
         input.style.fontSize = (this._label.fontSize * this._coordinate.dpr) + 'px';
-        // input.style.backgroundColor = this._label.fillColor;
+        input.style.backgroundColor = this.#combineBackgroundColor();
+        input.style.borderColor = this._label.lineColor;
+        input.style.borderStyle = this._label.lineStyle;
+        input.style.borderWidth = this._label.lineWidth + 'px';
         input.classList.remove('hidden');
         this._editor.enabledShortcut = false;
         this.update();
         this.focus();
+    }
+
+    #combineBackgroundColor() {
+        const color = this._label.fillColor;
+        const st = this._label.fillColor.indexOf('(');
+        const ed = this._label.fillColor.indexOf(')');
+        const rgb = color.slice(st, ed);
+        return 'rgba' + rgb + ',' + this._label.opacity + ')';
     }
 
     focus() {

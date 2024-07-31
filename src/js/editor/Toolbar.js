@@ -76,69 +76,7 @@ export class Toolbar {
         this._toolbarWrap.appendChild(toolbar);
 
         root.appendChild(this.#createControlOptionToolbar());
-        root.appendChild(this.#createFontOptionToolbar());
         root.appendChild(this._toolbarWrap);
-    }
-
-    #createFontOptionToolbar() {
-        const fontToolbar = document.createElement('div');
-        fontToolbar.id = 'font-option';
-        fontToolbar.className = COMMON_TOOLBAR_STYLE;
-        fontToolbar.classList.add('pl-2');
-
-        const fontSizeWrap = document.createElement('p');
-        fontSizeWrap.className = 'w-20 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
-
-        const fontSizeIcon = this.#createSvgIcon(SvgIcon.makeFontSizeIconConfig());
-        fontSizeIcon.classList.add('mr-2');
-
-        const fontSize = document.createElement('input');
-        fontSize.id = 'font-size';
-        fontSize.type = 'number';
-        fontSize.className = 'w-10 h-5 text-right';
-        fontSize.addEventListener('input', (e)=> {
-            let curVal = e.target.value ? parseInt(e.target.value, 10) : 1;
-
-            if (curVal <= 0) {
-                curVal = 1;
-                fontSize.value = 1;
-            }
-            const control = this._editor.page.selectRender.control;
-            control.fontSize = curVal;
-            const size = TextUtil.calculatorFontWidthHeight(control.text, control.fontSize);
-            const p1 = control.lt;
-            const p2 = control.rb;
-
-            p2.x = p1.x + size.width;
-            p2.y = p1.y + size.height;
-            control.lb.y = p1.y + size.height;
-            control.rt.x = p1.x + size.width;
-            control.updatePosition();
-            this._editor.render();
-        });
-
-        fontSizeWrap.appendChild(fontSizeIcon);
-        fontSizeWrap.appendChild(fontSize);
-
-        const fontColorToolbar = this.#createColorToolbar('font-color',
-            {x: ToolbarPosition.FONT_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
-            color => {
-                const control = this._editor.page.selectRender.control;
-                this._editor.historyManager.startUndo(new FontColorAction('undo font color', control));
-                control.fontColor = color;
-                this._editor.historyManager.endUndo(new FontColorAction('redo font color', control));
-            }
-        );
-
-        const fontColorBtn = this.#createSvgButton(SvgIcon.makeFontColorIconConfig(), '', ()=> {
-            ToolbarUtil.getInstance().showFontColorToolbar();
-        });
-
-        fontToolbar.appendChild(fontSizeWrap);
-        fontToolbar.appendChild(fontColorBtn);
-        fontToolbar.appendChild(fontColorToolbar);
-
-        return fontToolbar;
     }
 
     #createControlOptionToolbar() {
@@ -185,15 +123,37 @@ export class Toolbar {
         });
         fillColorBtn.id = 'fill-color-btn';
 
+        const fontSizeWrap = this.#createFontSizeWrap();
+        fontSizeWrap.id = 'font-size-wrap';
+
+        const fontColorToolbar = this.#createColorToolbar('font-color',
+            {x: ToolbarPosition.FONT_COLOR_LEFT, y: ToolbarPosition.TOOLBAR_TOP},
+            color => {
+                const control = this._editor.page.selectRender.control;
+                this._editor.historyManager.startUndo(new FontColorAction('undo font color', control));
+                control.fontColor = color;
+                this._editor.historyManager.endUndo(new FontColorAction('redo font color', control));
+            }
+        );
+
+        const fontColorBtn = this.#createSvgButton(SvgIcon.makeFontColorIconConfig(), '', ()=> {
+            ToolbarUtil.getInstance().showFontColorToolbar();
+        });
+        fontColorBtn.id = 'font-color-btn';
+
         controlToolbar.appendChild(lineWidthBtn);
         controlToolbar.appendChild(lineStyleBtn);
         controlToolbar.appendChild(lineColorBtn);
         controlToolbar.appendChild(fillColorBtn);
 
+        controlToolbar.appendChild(fontColorBtn);
+        controlToolbar.appendChild(fontSizeWrap);
+
         controlToolbar.appendChild(lineWidthToolbar);
         controlToolbar.appendChild(lineStyleToolbar);
         controlToolbar.appendChild(lineColorToolbar);
         controlToolbar.appendChild(fillColorToolbar);
+        controlToolbar.appendChild(fontColorToolbar);
         return controlToolbar;
     }
 
@@ -353,5 +313,45 @@ export class Toolbar {
         separator.className = 'shrink-0 bg-border h-full w-[1px] mr-2 dark:bg-gray-300';
         separator.role = 'none';
         return separator;
+    }
+
+    #createFontSizeWrap() {
+        const fontSizeWrap = document.createElement('p');
+        fontSizeWrap.className = 'w-20 h-8 inline-flex items-center justify-center rounded hover:bg-slate-200';
+
+        const fontSizeIcon = this.#createSvgIcon(SvgIcon.makeFontSizeIconConfig());
+        fontSizeIcon.classList.add('mr-2');
+
+        const fontSize = document.createElement('input');
+        fontSize.id = 'font-size';
+        fontSize.type = 'number';
+        fontSize.className = 'w-12 h-5 text-right ' +
+            'border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+        fontSize.addEventListener('input', (e)=> {
+            let curVal = e.target.value ? parseInt(e.target.value, 10) : 1;
+            console.log(curVal);
+
+            if (curVal <= 0) {
+                curVal = 1;
+                fontSize.value = 1;
+            }
+            const control = this._editor.page.selectRender.control;
+            control.fontSize = curVal;
+            const size = TextUtil.calculatorFontWidthHeight(control.text, control.fontSize);
+            const p1 = control.lt;
+            const p2 = control.rb;
+
+            p2.x = p1.x + size.width;
+            p2.y = p1.y + size.height;
+            control.lb.y = p1.y + size.height;
+            control.rt.x = p1.x + size.width;
+            control.updatePosition();
+            this._editor.render();
+        });
+
+        fontSizeWrap.appendChild(fontSizeIcon);
+        fontSizeWrap.appendChild(fontSize);
+
+        return fontSizeWrap;
     }
 }
