@@ -144,6 +144,7 @@ export class SelectEventHandler extends EventHandler {
         }
 
         e.editor.menu.hide();
+        ToolbarUtil.getInstance().hideControlOptionToolbar();
         if (page.selectRender !== null && page.selectRender.control === page.hoverRender?.control) {
             ToolbarUtil.getInstance().showControlOptionToolbar(e, page.selectRender.control);
             return true;

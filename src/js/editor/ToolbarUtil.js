@@ -69,6 +69,7 @@ export class ToolbarUtil {
     }
 
     static hideControlOptionToolbar() {
+        this.hideFontOptionToolbar();
         this.controlOptionToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
