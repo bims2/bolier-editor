@@ -68,7 +68,7 @@ export class ToolbarUtil {
         this.#checkTagYPosition(this.controlOptionToolbar, e);
     }
 
-    static hideLineOptionToolbar() {
+    static hideControlOptionToolbar() {
         this.controlOptionToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
@@ -135,7 +135,7 @@ export class ToolbarUtil {
     }
 
     static clear() {
-        this.hideLineOptionToolbar();
+        this.hideControlOptionToolbar();
         this.hideFontOptionToolbar();
     }
 }

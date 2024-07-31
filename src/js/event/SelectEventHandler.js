@@ -59,11 +59,6 @@ export class SelectEventHandler extends EventHandler {
         });
 
         page.selectRender = render;
-        if (render === null) {
-            ToolbarUtil.getInstance().hideLineOptionToolbar()
-            e.editor.startDragHandler(new DragPageEventHandler());
-        }
-
         page.render();
     }
 
@@ -71,10 +66,8 @@ export class SelectEventHandler extends EventHandler {
         const page = e.editor.page;
         page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
 
-        if (e.down && page.selectRender !== null) {
-            page.setCursor(CursorType.MOVE);
-            e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectRender.control));
-            e.editor.startDragHandler(new MoveControlEventHandler());
+        if (e.down) {
+            this.#startDrag(e);
             return;
         }
 
@@ -117,6 +110,18 @@ export class SelectEventHandler extends EventHandler {
         page.render();
     }
 
+    #startDrag(e) {
+        const page = e.editor.page;
+        if (page.selectRender !== null) {
+            page.setCursor(CursorType.MOVE);
+            e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectRender.control));
+            e.editor.startDragHandler(new MoveControlEventHandler());
+        } else {
+            ToolbarUtil.getInstance().hideControlOptionToolbar();
+            e.editor.startDragHandler(new DragPageEventHandler());
+        }
+    }
+
     onMouseUp(e) {
     }
 
@@ -130,20 +135,19 @@ export class SelectEventHandler extends EventHandler {
     }
 
     #showContextMenu(e) {
-        if ((e.originEvent.button !== 2) && (e.originEvent.which !== 3)) {
-            e.editor.menu.hide();
+        const page = e.editor.page;
+        if (e.originEvent.button === 2 || e.originEvent.which === 3) {
+            e.down = false;
+            ToolbarUtil.getInstance().hideControlOptionToolbar();
+            e.editor.menu.show(e.clientPoint);
             return false;
         }
 
-        const page = e.editor.page;
-        if (page.selectRender !== null) {
-            e.editor.menu.hide();
+        e.editor.menu.hide();
+        if (page.selectRender !== null && page.selectRender.control === page.hoverRender?.control) {
             ToolbarUtil.getInstance().showControlOptionToolbar(e, page.selectRender.control);
             return true;
         }
-
-        e.down = false;
-        e.editor.menu.show(e.clientPoint);
-        return true;
+        return false;
     }
 }
