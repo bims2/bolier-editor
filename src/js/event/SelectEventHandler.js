@@ -41,12 +41,9 @@ export class SelectEventHandler extends EventHandler {
     onMouseDown(e) {
         const page = e.editor.page;
 
-        if ((e.originEvent.button === 2) || (e.originEvent.which === 3)) {
-            e.down = false;
-            e.editor.menu.show(e.clientPoint);
+        if (this.#showContextMenu(e)) {
             return;
         }
-        e.editor.menu.hide();
 
         if (page.selectRender !== null && page.selectRender.resizeType !== PointPosition.NONE) {
             e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectRender.control));
@@ -121,12 +118,6 @@ export class SelectEventHandler extends EventHandler {
     }
 
     onMouseUp(e) {
-        const page = e.editor.page;
-        if (page.selectRender === null) {
-            return;
-        }
-
-        ToolbarUtil.getInstance().showControlOptionToolbar(e.originPoint, page.selectRender.control);
     }
 
     onMouseWheel(e) {
@@ -136,5 +127,23 @@ export class SelectEventHandler extends EventHandler {
     }
 
     onKeyUp(e) {
+    }
+
+    #showContextMenu(e) {
+        if ((e.originEvent.button !== 2) && (e.originEvent.which !== 3)) {
+            e.editor.menu.hide();
+            return false;
+        }
+
+        const page = e.editor.page;
+        if (page.selectRender !== null) {
+            e.editor.menu.hide();
+            ToolbarUtil.getInstance().showControlOptionToolbar(e, page.selectRender.control);
+            return true;
+        }
+
+        e.down = false;
+        e.editor.menu.show(e.clientPoint);
+        return true;
     }
 }

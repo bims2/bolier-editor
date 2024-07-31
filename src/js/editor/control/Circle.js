@@ -45,7 +45,7 @@ export class Circle extends Rect {
         painter.lineOption(this.lineColor, this.lineWidth, 1, this.lineStyle);
         ctx.ellipse(this.p.x, this.p.y, this.xRadius, this.yRadius, 0, 0, 2*Math.PI);
         painter.lineEnd();
-        painter.fill(this.fillColor, this.opacity)
+        painter.fill(this.fillColor, this.opacity);
         painter.end();
     }
 

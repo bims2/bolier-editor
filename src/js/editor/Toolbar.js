@@ -65,6 +65,7 @@ export class Toolbar {
             shortCutKeyManager.getKeyString(ShortCurKeyType.UNDO), ()=> {
             this._tools.undo();
         });
+        undoBtn.btn.disabled = true;
         const redoBtn = this.#createSvgButton(SvgIcon.makeRedoIconConfig(),
             shortCutKeyManager.getKeyString(ShortCurKeyType.REDO), ()=> {
             this._tools.redo();
@@ -141,9 +142,9 @@ export class Toolbar {
     }
 
     #createControlOptionToolbar() {
-        const lineToolbar = document.createElement('div');
-        lineToolbar.id = 'line-option';
-        lineToolbar.className = COMMON_TOOLBAR_STYLE;
+        const controlToolbar = document.createElement('div');
+        controlToolbar.id = 'control-option';
+        controlToolbar.className = COMMON_TOOLBAR_STYLE;
 
         const lineWidthToolbar = this.#createLineWidthToolbar();
         const lineWidthBtn = this.#createSvgButton(SvgIcon.makeLineWidthIconConfig(), '', () => {
@@ -184,16 +185,16 @@ export class Toolbar {
         });
         fillColorBtn.id = 'fill-color-btn';
 
-        lineToolbar.appendChild(lineWidthBtn);
-        lineToolbar.appendChild(lineStyleBtn);
-        lineToolbar.appendChild(lineColorBtn);
-        lineToolbar.appendChild(fillColorBtn);
+        controlToolbar.appendChild(lineWidthBtn);
+        controlToolbar.appendChild(lineStyleBtn);
+        controlToolbar.appendChild(lineColorBtn);
+        controlToolbar.appendChild(fillColorBtn);
 
-        lineToolbar.appendChild(lineWidthToolbar);
-        lineToolbar.appendChild(lineStyleToolbar);
-        lineToolbar.appendChild(lineColorToolbar);
-        lineToolbar.appendChild(fillColorToolbar);
-        return lineToolbar;
+        controlToolbar.appendChild(lineWidthToolbar);
+        controlToolbar.appendChild(lineStyleToolbar);
+        controlToolbar.appendChild(lineColorToolbar);
+        controlToolbar.appendChild(fillColorToolbar);
+        return controlToolbar;
     }
 
     #createColorToolbar(id, p, setColor) {
@@ -320,8 +321,7 @@ export class Toolbar {
             btnWrap.appendChild(shortcutTxt);
         }
 
-
-
+        btnWrap.btn = btn;
         return btnWrap;
     }
 

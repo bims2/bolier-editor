@@ -16,7 +16,7 @@ export class ToolbarUtil {
     static getInstance() {
         if (!this.instance) {
             this.instance = this;
-            this.lineOptionToolbar = document.getElementById('line-option');
+            this.controlOptionToolbar = document.getElementById('control-option');
             this.lineWidthToolbar = document.getElementById('line-width');
             this.lineStyleToolbar = document.getElementById('line-style');
             this.lineColorToolbar = document.getElementById('line-color');
@@ -35,7 +35,7 @@ export class ToolbarUtil {
         this.fontOptionToolbar.style.top = p.y + 'px';
         this.fontOptionToolbar.style.left = p.x + 'px';
         this.fontSize.value = Math.round(control.fontSize);
-        this.#checkTagPosition(this.fontOptionToolbar, p.x);
+        this.#checkTagXPosition(this.fontOptionToolbar, p.x);
     }
 
     static hideFontOptionToolbar() {
@@ -43,14 +43,15 @@ export class ToolbarUtil {
         this.fontColorToolbar.classList.add('hidden');
     }
 
-    static showControlOptionToolbar(p, control) {
+    static showControlOptionToolbar(e, control) {
+        const p = e.originPoint;
         if (control.type === ControlType.LABEL) {
             this.clear();
             this.showFontOptionToolbar(p, control);
             return;
         }
 
-        this.lineOptionToolbar.classList.remove('hidden');
+        this.controlOptionToolbar.classList.remove('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
@@ -61,13 +62,14 @@ export class ToolbarUtil {
             this.fillColorBtn.classList.remove('hidden');
         }
 
-        this.lineOptionToolbar.style.top = p.y + 'px';
-        this.lineOptionToolbar.style.left = p.x + 'px';
-        this.#checkTagPosition(this.lineOptionToolbar, p.x);
+        this.controlOptionToolbar.style.top = p.y + 'px';
+        this.controlOptionToolbar.style.left = p.x + 'px';
+        this.#checkTagXPosition(this.controlOptionToolbar, p.x);
+        this.#checkTagYPosition(this.controlOptionToolbar, e);
     }
 
     static hideLineOptionToolbar() {
-        this.lineOptionToolbar.classList.add('hidden');
+        this.controlOptionToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
@@ -79,7 +81,7 @@ export class ToolbarUtil {
         this.lineStyleToolbar.classList.add('hidden');
         this.lineColorToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
-        this.#checkTagPosition(this.lineWidthToolbar, ToolbarPosition.LINE_WIDTH_LEFT);
+        this.#checkTagXPosition(this.lineWidthToolbar, ToolbarPosition.LINE_WIDTH_LEFT);
     }
 
     static showLineStyleToolbar() {
@@ -94,7 +96,7 @@ export class ToolbarUtil {
         this.lineStyleToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
         this.fillColorToolbar.classList.add('hidden');
-        this.#checkTagPosition(this.lineColorToolbar, ToolbarPosition.LINE_COLOR_LEFT);
+        this.#checkTagXPosition(this.lineColorToolbar, ToolbarPosition.LINE_COLOR_LEFT);
     }
 
     static showFillColorToolbar() {
@@ -102,15 +104,15 @@ export class ToolbarUtil {
         this.lineColorToolbar.classList.add('hidden');
         this.lineStyleToolbar.classList.add('hidden');
         this.lineWidthToolbar.classList.add('hidden');
-        this.#checkTagPosition(this.fillColorToolbar, ToolbarPosition.FILL_COLOR_LEFT);
+        this.#checkTagXPosition(this.fillColorToolbar, ToolbarPosition.FILL_COLOR_LEFT);
     }
 
     static showFontColorToolbar() {
         this.fontColorToolbar.classList.remove('hidden');
-        this.#checkTagPosition(this.fontColorToolbar, ToolbarPosition.FONT_COLOR_LEFT);
+        this.#checkTagXPosition(this.fontColorToolbar, ToolbarPosition.FONT_COLOR_LEFT);
     }
 
-    static #checkTagPosition(tag, tagLeft) {
+    static #checkTagXPosition(tag, tagLeft) {
         const rect = tag.getBoundingClientRect();
         const windowWidth = window.innerWidth || document.documentElement.clientWidth;
 
@@ -121,6 +123,14 @@ export class ToolbarUtil {
             tag.style.left = left + 'px';
         } else {
             tag.style.left = tagLeft + 'px';
+        }
+    }
+
+    static #checkTagYPosition(tag, e) {
+        const editorY = e.editor.canvas.getBoundingClientRect().y;
+        const y = e.originPoint.y
+        if (editorY > y) {
+            tag.style.top = (y + Math.abs(ToolbarPosition.TOOLBAR_TOP)*2) + 'px';
         }
     }
 
