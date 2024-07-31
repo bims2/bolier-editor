@@ -45,9 +45,8 @@ export class SelectEventHandler extends EventHandler {
             return;
         }
 
+        //FIXME: 중복코드
         if (page.selectRender !== null && page.selectRender.resizeType !== PointPosition.NONE) {
-            e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectRender.control));
-            e.editor.startDragHandler(new ResizeControlEventHandler());
             return;
         }
 
@@ -113,6 +112,11 @@ export class SelectEventHandler extends EventHandler {
     #startDrag(e) {
         const page = e.editor.page;
         if (page.selectRender !== null) {
+            if (page.selectRender.resizeType !== PointPosition.NONE) {
+                e.editor.historyManager.startUndo(new ResizeAction('undo resize', page.selectRender.control));
+                e.editor.startDragHandler(new ResizeControlEventHandler());
+                return;
+            }
             page.setCursor(CursorType.MOVE);
             e.editor.historyManager.startUndo(new ResizeAction('undo move', page.selectRender.control));
             e.editor.startDragHandler(new MoveControlEventHandler());
