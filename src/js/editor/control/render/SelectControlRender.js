@@ -15,12 +15,10 @@ export class SelectControlRender extends ControlRender {
 
         const selRect = this.selectionRect;
         painter.start();
-        painter.lineOption('rgb(53,155,255)', 1, 0.8);
         painter.drawRect(selRect);
         painter.end();
 
         painter.start();
-        painter.lineOption('black');
         let resizeRect = ControlUtil.generateResizeRect(selRect.lt);
         painter.drawRect(resizeRect);
         resizeRect = ControlUtil.generateResizeRect(selRect.rt);
@@ -29,7 +27,6 @@ export class SelectControlRender extends ControlRender {
         painter.drawRect(resizeRect);
         resizeRect = ControlUtil.generateResizeRect(selRect.lb);
         painter.drawRect(resizeRect);
-        painter.fill('white');
         painter.end();
     }
 }

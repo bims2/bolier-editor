@@ -99,10 +99,14 @@ export class Rect extends Polygon {
     }
 
     clone(control) {
+        this.clonePosition(control);
+        super.clone(control);
+    }
+
+    clonePosition(control) {
         this.lt.clone(control.lt);
         this.rt.clone(control.rt);
         this.rb.clone(control.rb);
         this.lb.clone(control.lb);
-        super.clone(control);
     }
 }

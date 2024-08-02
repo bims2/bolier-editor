@@ -20,7 +20,7 @@ export const ControlType = {
 export class Control {
     constructor() {
         this._lineWidth = 1;
-        this._lineColor = 'black';
+        this._lineColor = 'rgb(0,0,0)';
         this._lineStyle = LineStyle.SOLID;
         this._fillColor = 'rgb(189,246,197)';
         this._opacity = 0.5;

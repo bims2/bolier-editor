@@ -162,18 +162,18 @@ export class Page {
         // console.log('sX', sX, 'sY', sY, 'orgPoint', {x: orgPoint.x / dpr, y: orgPoint.y / dpr}, 'wayPoint', wayPoint);
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
 
+        this.renderGridLine(sX, eX, sY, eY, true);
+        this.renderGridLine(sY, eY, sX, eX, false);
+
         //100% 화면 영역표시
         if (this._viewOutLine) {
             const orgWidth = this.ctx.canvas.width;
             const orgHeight = this.ctx.canvas.height;
-            this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'blue', 3, 1);
-            this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'blue', 3, 1);
-            this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'blue', 3, 1);
-            this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'blue', 3, 1);
+            this.painter.drawLine({x: 0, y: 0}, {x: orgWidth, y: 0}, 'rgb(0,0,255)', 3, 1);
+            this.painter.drawLine({x: orgWidth, y: 0}, {x: orgWidth, y: orgHeight}, 'rgb(0,0,255)', 3, 1);
+            this.painter.drawLine({x: orgWidth, y: orgHeight}, {x: 0, y: orgHeight}, 'rgb(0,0,255)', 3, 1);
+            this.painter.drawLine({x: 0, y: orgHeight}, {x: 0, y: 0}, 'rgb(0,0,255)', 3, 1);
         }
-
-        this.renderGridLine(sX, eX, sY, eY, true);
-        this.renderGridLine(sY, eY, sX, eX, false);
     }
 
     renderGridLine(sP, eP, sP1, eP1, isVertical) {

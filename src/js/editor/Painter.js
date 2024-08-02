@@ -1,4 +1,5 @@
 import {LineStyle} from "./control/LineStyle.js";
+import {ControlUtil} from "./control/ControlUtil.js";
 
 export class Painter {
     constructor(ctx) {
@@ -30,7 +31,7 @@ export class Painter {
         this.end();
     }
 
-    drawLine(p1, p2, color = 'black', width = 1, opacity = 1, style = LineStyle.SOLID) {
+    drawLine(p1, p2, color = 'rgb(0,0,0)', width = 1, opacity = 1, style = LineStyle.SOLID) {
         this.start();
         this.lineOption(color, width, opacity, style);
         this.line(p1, p2);
@@ -39,11 +40,10 @@ export class Painter {
         return this;
     }
 
-    lineOption(color = 'black', width = 1, opacity = 1, style = LineStyle.SOLID) {
+    lineOption(color = 'rgb(0,0,0)', width = 1, opacity = 1, style = LineStyle.SOLID) {
         const ctx = this._ctx;
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = ControlUtil.rgbToRgba(color, opacity);
         ctx.lineWidth = width;
-        ctx.globalAlpha = opacity;
         if (style !== LineStyle.SOLID) {
             this.ctx.setLineDash([5, 5]);
         }
@@ -56,6 +56,7 @@ export class Painter {
     }
 
     lineEnd() {
+        this.ctx.closePath();
         this.ctx.stroke();
     }
 
@@ -67,24 +68,29 @@ export class Painter {
 
     end() {
         const ctx = this._ctx;
-        ctx.closePath();
         ctx.restore();
     }
 
     drawRect(rect) {
         const lt = rect.lt;
-        const rt = rect.rt;
         const rb = rect.rb;
-        const lb = rect.lb;
+        const width = rb.x - lt.x;
+        const height = rb.y - lt.y;
 
         const ctx = this.ctx;
-        ctx.moveTo(lt.x, lt.y);
-        ctx.lineTo(rt.x, rt.y);
-        ctx.lineTo(rb.x, rb.y);
-        ctx.lineTo(lb.x, lb.y);
-        ctx.lineTo(lt.x, lt.y);
-        ctx.lineTo(rt.x, rt.y);
-        this.lineEnd();
+        ctx.save();
+        // this.ctx.lineCap = 'round';
+        // this.ctx.lineJoin = 'round';
+        if (rect.fillColor !== '') {
+            ctx.fillStyle = ControlUtil.rgbToRgba(rect.fillColor, rect.opacity?? 1);
+            ctx.fillRect(lt.x, lt.y, width, height);
+        }
+        if (rect.lineColor !== '') {
+            this.lineOption(rect.lineColor, rect.lineWidth ?? 0.5);
+            ctx.strokeRect(lt.x, lt.y, width, height);
+        }
+
+        ctx.restore();
     }
 
     drawTriangle(triangle) {
@@ -93,23 +99,33 @@ export class Painter {
         const right = triangle.right;
 
         const ctx = this.ctx;
+        this.start();
+        this.lineOption(triangle.lineColor, triangle.lineWidth, 1, triangle.lineStyle);
+        ctx.beginPath();
         ctx.moveTo(top.x, top.y);
         ctx.lineTo(left.x, left.y);
         ctx.lineTo(right.x, right.y);
         ctx.lineTo(top.x, top.y);
+        this.fill(triangle.fillColor, triangle.opacity);
         this.lineEnd();
+        this.end();
     }
 
     drawCircle(circle) {
         const ctx = this.ctx;
+        this.start();
         ctx.ellipse(circle.p.x, circle.p.y, circle.xRadius, circle.yRadius, 0, 0, 2*Math.PI);
-        this.lineEnd();
+        this.fill(circle.fillColor, circle.opacity);
+        if (circle.lineColor !== '') {
+            this.lineOption(circle.lineColor, circle.lineWidth, 1, circle.lineStyle);
+            this.lineEnd();
+        }
+        this.end();
     }
 
     fill(color, opacity = 1) {
         const ctx = this.ctx;
-        ctx.fillStyle = color;
-        ctx.globalAlpha = opacity;
+        ctx.fillStyle = ControlUtil.rgbToRgba(color, opacity);
         ctx.fill();
     }
 

@@ -10,6 +10,8 @@ export class ControlUtil {
 
     static generateResizeRect(p) {
         const rect = new SelectionRect();
+        rect.fillColor = 'rgb(255, 255, 255)';
+        rect.lineColor = 'rgb(0, 0, 0)';
         rect.updatePosition({x: p.x-3, y: p.y-3}, {x: p.x+3, y: p.y+3});
         return rect;
     }
@@ -28,5 +30,12 @@ export class ControlUtil {
         const d = b + c - a;
 
         return d <= 1;
+    }
+
+    static rgbToRgba(color, opacity) {
+        const st = color.indexOf('(');
+        const ed = color.indexOf(')');
+        const rgb = color.slice(st, ed);
+        return 'rgba' + rgb + ',' + opacity + ')';
     }
 }

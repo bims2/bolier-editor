@@ -222,16 +222,13 @@ export class Polygon extends Control {
         const st = points[0];
         const sd = points[1];
         ctx.lineTo(st.x, st.y);
-        ctx.lineTo(sd.x, sd.y);
-
-        painter.lineEnd();
-
-        ctx.lineWidth = this.lineWidth;
+        // ctx.lineTo(sd.x, sd.y);
 
         if (this.fillColor !== 'none') {
             painter.fill(this.fillColor, this.opacity);
         }
 
+        painter.lineEnd();
         painter.end();
     }
 
